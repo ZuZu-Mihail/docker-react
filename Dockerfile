@@ -10,6 +10,7 @@ WORKDIR /app
 # Installing dependencies
 COPY ./package.json ./
 RUN npm install
+
 #install nodemon to provide hot-reloading functionality.
 RUN npm install nodemon --save-dev
 
