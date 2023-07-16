@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { React, useRef, useState } from "react";
+import "./App.css";
+import ItemProvider from "./providers/itemProvider/provider";
+import Input from "./components/input/input";
+import Tabel from "./components/tabel/tabel";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [backgroundColor, setBackgroundColor] = useState("");
+    const [textColor, setTextColor] = useState("");
+    const counter = useRef(0);
+    const incrementCounter = () => {
+        counter.current++;
+        if (counter.current === 10) {
+            setBackgroundColor(`rgb(27,44,78)`);
+            setTextColor(`rgb(255,255,255)`);
+            counter.current = 0;
+        }
+    };
+
+    return (
+        <ItemProvider>
+            <div className="app">
+                <h1 className="title">Tasks List</h1>
+                <Input
+                    backgroundColor={backgroundColor}
+                    textColor={textColor}
+                />
+                <Tabel incrementCounter={incrementCounter} />
+            </div>
+        </ItemProvider>
+    );
+};
 
 export default App;

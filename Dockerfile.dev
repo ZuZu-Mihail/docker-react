@@ -1,0 +1,20 @@
+# Fetching the latest node image on alpine linux
+FROM node:alpine AS development
+
+# Declaring env
+ENV NODE_ENV development
+
+# Setting the working directory
+WORKDIR /react-app
+
+# Copying package.json and package-lock.json
+COPY ./package.json /react-app/
+
+# Installing dependencies
+RUN npm install
+
+# Copying the rest of the files
+COPY . .
+
+# Starting the app
+CMD ["npm", "start"]
