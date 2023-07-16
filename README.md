@@ -9,7 +9,12 @@ Example:
 docker build -t react_tasks .
 ```
 # Pentru a rula acum docker
-
+## Useful info:
+Ne vom folosi de un alt bash pentru a prelua id-ul ultimei imagini create ( in cazul in care ultima imagine e cea a acestui proiect )
+```bash
+$(docker images --format='{{.ID}}' | head -1)
+```
+## The commands:
 ```bash
 docker run -d -it --rm -p < port_dorit >:8080 --name < nume_container > $(docker images --format='{{.ID}}' | head -1) 
 ```
