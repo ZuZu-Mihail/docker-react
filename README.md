@@ -15,6 +15,7 @@ Just use the command:
 ```bash
 docker build https://github.com/ZuZu-Mihail/docker-react.git -t <name_image>
 ```
+Example:
 ```bash
 docker build https://github.com/ZuZu-Mihail/docker-react.git -t react_tasks 
 ```
