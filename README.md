@@ -1,6 +1,8 @@
 # Starting points
-
-după ce se copiaza git-ul puteti utiliza comenzile:
+### Install Docker
+Prima data trebuie sa fie docker pe OS vostru (în cazul windows de exemplu: Docker Engine) - https://www.docker.com/
+### Copy/Clone Git
+după ce se copiaza git-ul puteti instala imaginea de docker folosind comenzile:
 ```bash
 docker build -t < nume_imagine > .
 ```
