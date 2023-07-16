@@ -45,7 +45,8 @@ function Tabel(props) {
 
     return (
         <>
-            {/* <div>
+            {/* YOU CAN IGNORE THAT, aveam erori de docking si ma plictiseam 
+             <div>
                 <span className="unwantedText">
                     I didn't want to put this circle here, but here you go:
                 </span>
