@@ -1,3 +1,5 @@
+### IMPORTANT NOTICE
+Toate comenzile din acest readme sunt folosite in terminalul "bash". Pentru a folosi alt CMD caută echivalentul pe internet.
 # Starting points
 ### Install Docker
 Prima data trebuie sa fie docker pe OS vostru (în cazul windows de exemplu: Docker Engine) - https://www.docker.com/
