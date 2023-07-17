@@ -7,9 +7,24 @@ import { useState } from "react";
 const DESCENDING_SORTING_ORDER = "descending";
 const ASCENDING_SORTING_ORDER = "ascending";
 
+/**
+ * The `SortButton` component is a button that allows users to sort an array of items in either
+ * ascending or descending order based on their names.
+ * @param props - The `props` parameter is an object that contains the properties passed to the
+ * `SortButton` component. It may include the following properties:
+ * @returns The SortButton component is returning a button element with a className of "sortIcon". The
+ * button has an onClick event handler that calls the sortItems function. Inside the button, there is a
+ * conditional rendering based on the sortingOrder state. If the sortingOrder is
+ * DESCENDING_SORTING_ORDER, it renders a FontAwesomeIcon with the faArrowDownAZ icon and a color of
+ * "#1a2b4
+ */
 const SortButton = (props) => {
     const [sortingOrder, setSortingOrder] = useState(DESCENDING_SORTING_ORDER);
 
+    /**
+     * The function `sortItems` sorts an array of items in either ascending or descending order based
+     * on their names.
+     */
     const sortItems = () => {
         const updatedItems = [...props.items];
         if (sortingOrder === DESCENDING_SORTING_ORDER) {

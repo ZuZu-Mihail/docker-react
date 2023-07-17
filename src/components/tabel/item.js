@@ -4,6 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Item = (props) => {
+/**
+ * The `handleDelete` function filters out the item with a specific id from the `props.items` array and
+ * updates the `props.setItems` function with the filtered array.
+ */
     const handleDelete = () => {
         const filteredItems = props.items.filter(
             (item) => item.id !== props.item.id
