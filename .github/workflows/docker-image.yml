@@ -14,5 +14,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+    - name: Build Task-Scheduler-App
       run: docker build . --file Dockerfile --tag task-scheduler:$(date +%s)
