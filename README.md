@@ -1,3 +1,5 @@
+### IMPORTANT NOTICE
+Toate comenzile din acest readme sunt folosite in terminalul "bash". Pentru a folosi alt CMD caută echivalentul pe internet.
 # Starting points
 ### Install Docker
 Prima data trebuie sa fie docker pe OS vostru (în cazul windows de exemplu: Docker Engine) - https://www.docker.com/
@@ -9,6 +11,15 @@ docker build -t < nume_imagine > .
 Example:
 ```bash
 docker build -t react_tasks .
+```
+### If you don't want to clone
+Just use the command:
+```bash
+docker build https://github.com/ZuZu-Mihail/docker-react.git -t <name_image>
+```
+Example:
+```bash
+docker build https://github.com/ZuZu-Mihail/docker-react.git -t react_tasks 
 ```
 # Pentru a rula acum docker
 ### Useful info:
