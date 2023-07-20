@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 /* In this code, `export const ItemContext = createContext({ items: [], setItems: () => {}, });` is
 creating a new context object called `ItemContext` using the `createContext` function from React. */
@@ -17,6 +17,11 @@ export const ItemContext = createContext({
 const ItemProvider = ({ children }) => {
   const [items, setItems] = useState([]);
 
+  useEffect(() => {
+    fetch("http://localhost:4000/tasks")
+    .then((response) => response.json())
+    .then((data) => setItems(data));
+  }, []);
   return (
     <ItemContext.Provider value={{ items, setItems }}>
       {children}

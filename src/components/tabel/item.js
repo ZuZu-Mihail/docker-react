@@ -10,17 +10,27 @@ const Item = (props) => {
  */
     const handleDelete = () => {
         const filteredItems = props.items.filter(
-            (item) => item.id !== props.item.id
+            (item) => item._id !== props.item._id
         );
+        // console.log(props.item._id);
+        fetch("http://localhost:4000/tasks/"+props.item._id, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .catch((err) => {
+                console.log(err.message);
+            });
         props.setItems(filteredItems);
     };
 
     return (
         <>
             <tr>
-                <td>
-                    {props.item.id}
-                </td>
+                {/* <td>
+                    {props.item._id}
+                </td> */}
                 <td>
                     <span
                         className={`itemContent ${props.item.isChecked ? "crossed" : ""
@@ -35,7 +45,7 @@ const Item = (props) => {
                         type="checkbox"
                         checked={props.item.isChecked}
                         onChange={() =>
-                            props.handleCheckboxChange(props.item.id)
+                            props.handleCheckboxChange(props.item._id)
                         }
                     />
                 </td>

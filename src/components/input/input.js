@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ItemContext } from "../../providers/itemProvider/provider";
 import "./input.css";
 
@@ -6,12 +6,14 @@ function Input(props) {
     const { items, setItems } = useContext(ItemContext);
     const [inputValue, setInputValue] = useState("");
 
-/**
- * The function `handleInputChange` is used to handle input change events and update the input value.
- * @param event - The event parameter is an object that represents the event that triggered the
- * function. In this case, it is likely an event object related to an input change event, such as when
- * a user types into an input field.
- */
+
+
+    /**
+     * The function `handleInputChange` is used to handle input change events and update the input value.
+     * @param event - The event parameter is an object that represents the event that triggered the
+     * function. In this case, it is likely an event object related to an input change event, such as when
+     * a user types into an input field.
+     */
     function handleInputChange(event) {
         setInputValue(event.target.value);
     }
@@ -20,27 +22,50 @@ function Input(props) {
      * The function `handleAddItem` adds a new item to an array of items if the input value is not
      * empty.
      */
-    function handleAddItem() {
+    let somethinghere;
+    const handleAddItem = () => {
         if (inputValue.trim() !== "") {
-            setItems([
-                ...items,
-                {
-                    id: items.length + 1,
-                    name: inputValue,
-                    isChecked: false,
+            fetch("http://localhost:4000/tasks", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
                 },
-            ]);
-            setInputValue("");
+                body: JSON.stringify({
+                    name: inputValue,
+                    isChecked: false
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    setItems([
+                        ...items,
+                        data]);
+                    // console.log(data);
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
         }
-    }
+        setInputValue("");
+        // setItems([
+        //     ...items,
+        //     {
+        //         // id: items.length + 1,
+        //         name: inputValue,
+        //         isChecked: false,
+        //     },
+        // ]);
+        // setInputValue("");
+    };
 
-   /**
-    * The handleKeyDown function checks if the "Enter" key is pressed and calls the handleAddItem
-    * function if it is.
-    * @param event - The event parameter is an object that contains information about the event that
-    * occurred, such as the key that was pressed. In this case, it is used to check if the key that was
-    * pressed is the Enter key.
-    */
+
+    /**
+     * The handleKeyDown function checks if the "Enter" key is pressed and calls the handleAddItem
+     * function if it is.
+     * @param event - The event parameter is an object that contains information about the event that
+     * occurred, such as the key that was pressed. In this case, it is used to check if the key that was
+     * pressed is the Enter key.
+     */
     const handleKeyDown = (event) => {
         if (event.key === "Enter") {
             handleAddItem();

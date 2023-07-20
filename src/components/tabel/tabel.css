@@ -32,13 +32,13 @@
     padding: 0px 8px;
 }
 
-th:nth-child(2) {
+th:nth-child(1) {
     width: 400px;
     padding: 0px 8px;
 }
 
-th:nth-child(2) {
-    width: fit-content;
+th:nth-child(1) {
+    /* width: fit-content; */
     padding: 0px 16px;
 }
 

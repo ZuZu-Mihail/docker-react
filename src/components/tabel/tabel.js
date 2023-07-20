@@ -14,28 +14,51 @@ import SortButton from "../sortButton/sortButton";
  * body. The header contains four columns: ID, Task, Finished, and Remove?. The body contains the
  * filtered items mapped to `Item` components.
  */
+
+
 function Tabel(props) {
     const { items, setItems } = useContext(ItemContext);
     const [searchValue, setSearchValue] = useState("");
-    const [circleColor, setCircleColor] = useState("#1b2c4e");
+    // const [circleColor, setCircleColor] = useState("#1b2c4e");
 
     /* The `useEffect` hook in React is used to perform side effects in functional components. It takes
     two arguments: a function and a dependency array. */
-    useEffect(() => {
-        let red = Math.random() * 255;
-        let green = Math.random() * 255;
-        let blue = Math.random() * 255;
-        setCircleColor(`rgb(${red},${green},${blue})`);
-    }, [items]);
+    // useEffect(() => {
+    //     let red = Math.random() * 255;
+    //     let green = Math.random() * 255;
+    //     let blue = Math.random() * 255;
+    //     setCircleColor(`rgb(${red},${green},${blue})`);
+    // }, [items]);
 
     /* The `handleCheckboxChange` function is responsible for handling the change event when a
     checkbox is clicked. It takes the `id` of the item as a parameter. */
-    const handleCheckboxChange = (id) => {
-        props.incrementCounter();
+    const handleCheckboxChange = (string) => {
+        const _id = string;
+
+        /* The `map` function is used to create a new array based on the `items` array. It iterates over
+        each item in the `items` array and returns a new array with the same number of items. */
+
         const updateditems = items.map((item) =>
-            item.id === id ? { ...item, isChecked: !item.isChecked } : item
+
+            item._id === _id ? { ...item, isChecked: !item.isChecked } : item
         );
-        setItems(updateditems);
+        // console.log(updateditems);
+        
+        const status = updateditems.find((item) => item._id === _id).isChecked;
+
+        fetch("http://localhost:4000/tasks/"+_id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                isChecked: status
+            }),
+        })
+            .catch((err) => {
+                console.log(err.message);
+            });
+            setItems(updateditems);
     };
 
     /**
@@ -50,15 +73,16 @@ function Tabel(props) {
         setSearchValue(event.target.value);
     }
 
-/* The code is filtering the `items` array based on the `searchValue` and then mapping over the
-filtered items to create an array of `Item` components. */
-    let filteredItems = items
+    /* The code is filtering the `items` array based on the `searchValue` and then mapping over the
+    filtered items to create an array of `Item` components. */
+
+    const filteredItems = items
         .filter((item) =>
             item.name.toLowerCase().includes(searchValue.toLowerCase())
         )
         .map((item) => (
             <Item
-                key={item.id}
+                key={item._id}
                 item={item}
                 handleCheckboxChange={handleCheckboxChange}
                 setItems={setItems}
@@ -81,7 +105,7 @@ filtered items to create an array of `Item` components. */
             <table className="itemsTable">
                 <thead className="tabelHead">
                     <tr>
-                        <th className="tabelHeadID">ID</th>
+                        {/* <th className="tabelHeadID">ID</th> */}
                         <th className="tabelHeadItem">
                             <span className="item">Task</span>
                             <Search
