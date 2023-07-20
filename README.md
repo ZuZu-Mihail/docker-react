@@ -17,7 +17,7 @@ daca doresti sa rulezi doar server side foloseste
 ```bash
 npm run server
 ```
-###Concomitent
+### Concomitent
 Daca doresti sa rulezi atat client side cat si server side foloseste
 ```bash
 npm run dev
