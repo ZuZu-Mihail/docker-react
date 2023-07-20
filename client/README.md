@@ -12,15 +12,9 @@ Example:
 ```bash
 docker build -t react_tasks .
 ```
-~~### If you don't want to clone~~REMOVED AFTER UNIFY WITH BACKENDS
-~~Just use the command:~~
-```bash
-docker build https://github.com/ZuZu-Mihail/docker-react.git -t <name_image>
-```
-~~Example:~~
-```bash
-docker build https://github.com/ZuZu-Mihail/docker-react.git -t react_tasks 
-```
+~~### If you don't want to clone~~
+###REMOVED AFTER UNIFY WITH BACKENDS
+
 # Pentru a rula acum docker
 ### Useful info:
 Ne vom folosi de un alt bash pentru a prelua id-ul ultimei imagini create ( in cazul in care ultima imagine e cea a acestui proiect )
