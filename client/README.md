@@ -12,12 +12,12 @@ Example:
 ```bash
 docker build -t react_tasks .
 ```
-### If you don't want to clone
-Just use the command:
+~~### If you don't want to clone~~REMOVED AFTER UNIFY WITH BACKENDS
+~~Just use the command:~~
 ```bash
 docker build https://github.com/ZuZu-Mihail/docker-react.git -t <name_image>
 ```
-Example:
+~~Example:~~
 ```bash
 docker build https://github.com/ZuZu-Mihail/docker-react.git -t react_tasks 
 ```
