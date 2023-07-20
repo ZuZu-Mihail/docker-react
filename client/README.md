@@ -13,7 +13,7 @@ Example:
 docker build -t react_tasks .
 ```
 ~~### If you don't want to clone~~
-###REMOVED AFTER UNIFY WITH BACKENDS
+REMOVED AFTER UNIFY WITH BACKENDS
 
 # Pentru a rula acum docker
 ### Useful info:
