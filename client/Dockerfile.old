@@ -14,11 +14,18 @@ RUN npm install
 #install nodemon to provide hot-reloading functionality.
 RUN npm install nodemon --save-dev
 
+
 # Copying all the files in our project
 COPY . .
 
-# Exposing port 3000
-EXPOSE 3000
+# Building our application
+RUN npm run build
 
-# Running our app
-CMD ["npm", "start"]
+# Fetching the latest nginx image
+FROM nginx
+
+# Copying built assets from builder
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Copying our nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
