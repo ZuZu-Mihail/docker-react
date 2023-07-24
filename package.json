@@ -2,7 +2,7 @@
   "scripts": {
     "buildCustom": "cd client && react-scripts build",
     "client": "cd client && npm start",
-    "server": "cd server && node app.js",
+    "server": "cd server && nodemon app.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
     },
   "devDependencies": {
