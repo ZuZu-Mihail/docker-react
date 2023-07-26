@@ -1,33 +1,28 @@
-import { React, useRef, useState, useContext, useEffect } from "react";
-import "./App.css";
-import ItemProvider from "./providers/itemProvider/provider";
-import Input from "./components/input/input";
-import Tabel from "./components/tabel/tabel";
+import { React } from "react";
+import Auth from "./components/auth/auth";
+import Home from "./Home";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const App = () => {
-    const [backgroundColor, setBackgroundColor] = useState("");
-    const [textColor, setTextColor] = useState("");
-    const counter = useRef(0);
-    const incrementCounter = () => {
-        counter.current++;
-        if (counter.current === 10) {
-            setBackgroundColor(`rgb(27,44,78)`);
-            setTextColor(`rgb(255,255,255)`);
-            counter.current = 0;
-        }
-    };
+
 
     return (
-        <ItemProvider>
-            <div className="app">
-                <h1 className="title">Tasks List</h1>
-                <Input
-                    backgroundColor={backgroundColor}
-                    textColor={textColor}
-                />
-                <Tabel incrementCounter={incrementCounter} />
-            </div>
-        </ItemProvider>
+        <>
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/auth" element={<Auth />} />
+        </Routes>
+            {/* <ItemProvider>
+                <div className="app">
+                    <h1 className="title">Tasks List</h1>
+                    <Input
+                        backgroundColor={backgroundColor}
+                        textColor={textColor}
+                    />
+                    <Tabel incrementCounter={incrementCounter} />
+                </div>
+            </ItemProvider> */}
+        </>
     );
 };
 

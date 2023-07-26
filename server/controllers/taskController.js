@@ -13,7 +13,7 @@ const taskController = {
         res.status(200).json(task);
     },
     getByIDD: async function (req, res) {
-        
+
         let task = await taskModel.getTaskByIDD(parseInt(req.params.id));
 
         res.status(200).json(task);
@@ -30,7 +30,7 @@ const taskController = {
         res.status(201).json(editedtask);
     },
 
-    delete: async function(req, res) {
+    delete: async function (req, res) {
         let deletedtask = await taskModel.deleteTask(req.params.id);
 
         res.status(201).json(deletedtask);
