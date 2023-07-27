@@ -32,7 +32,7 @@ function Auth() {
             setMessage("");
         }
     }
-        , [mailCookies]);
+        , []);
 
 
     return (

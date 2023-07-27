@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button } from "react-bootstrap";
-import { useHistory, Redirect } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();

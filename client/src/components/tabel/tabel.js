@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { ItemContext } from "../../providers/itemProvider/provider";
 import "./tabel.css";
 import Item from "./item";
@@ -16,7 +16,7 @@ import SortButton from "../sortButton/sortButton";
  */
 
 
-function Tabel(props) {
+function Tabel() {
     const { items, setItems } = useContext(ItemContext);
     const [searchValue, setSearchValue] = useState("");
     // const [circleColor, setCircleColor] = useState("#1b2c4e");
@@ -92,16 +92,6 @@ function Tabel(props) {
 
     return (
         <>
-            {/* YOU CAN IGNORE THAT, aveam erori de docking si ma plictiseam 
-             <div>
-                <span className="unwantedText">
-                    I didn't want to put this circle here, but here you go:
-                </span>
-            </div>
-            <div
-                className="randomCircleIAmRequiredToDisplay"
-                style={{ backgroundColor: circleColor }}
-            ></div> */}
             <table className="itemsTable">
                 <thead className="tabelHead">
                     <tr>
