@@ -1,24 +1,24 @@
-const express = require('express');
-const app = express();
-const mongoose = require("mongoose");
-var cors = require('cors');
+const express = require('express'); // import express
+const app = express(); // create express app
+const mongoose = require("mongoose"); // import mongoose
+var cors = require('cors'); // import cors
 
  
 
-app.use(express.json());
-app.use(cors());  
+app.use(express.json());    // parse json bodies
+app.use(cors()); // enable cors
 
-const taskRouter = require("./routes/taskRoutes");
-const userRouter= require("./routes/userRoutes");
+const taskRouter = require("./routes/taskRoutes");// import taskRoutes
+const userRouter= require("./routes/userRoutes");// import userRoutes
 
-app.get("/", (req, res) => res.send("<h1>It's working</h1> go to <a href='/tasks'>tasks</a>"));
+app.get("/", (req, res) => res.send("<h1>It's working</h1> go to <a href='/tasks'>tasks</a>"));     // create a route for the app
 
-app.use("/tasks", taskRouter);
-app.use("/users", userRouter);
+app.use("/tasks", taskRouter); // use taskRoutes
+app.use("/users", userRouter); // use userRoutes
 
-mongoose.connect(
+mongoose.connect( // connect to the database
     "mongodb+srv://mihailhanga:ParolaCrystal@cluster0.mjivone.mongodb.net/?retryWrites=true&w=majority",
-    { useNewUrlParser: true }
+    { useNewUrlParser: true } 
 ).then(() => {
     const { createProxyMiddleware } = require('http-proxy-middleware');
     app.use('/api', createProxyMiddleware({
@@ -28,6 +28,7 @@ mongoose.connect(
         onProxyRes: function (proxyRes, req, res) {
             proxyRes.headers['Access-Control-Allow-Origin'] = '*';
         }
-    }));
+    })); // creates a proxy server that redirects requests to the original url
     app.listen(4000);
 });
+
