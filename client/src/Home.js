@@ -47,6 +47,7 @@ const Home = () => {
                 )
         } else {
             // <Navigate to="/auth/" />
+            setMessage("as a guest u should not seing this, it will redirect you to the auth page");
             window.location.href = "/auth/";
         }
 

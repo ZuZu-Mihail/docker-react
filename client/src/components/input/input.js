@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { ItemContext } from "../../providers/itemProvider/provider";
 import "./input.css";
 
@@ -22,7 +22,6 @@ function Input(props) {
      * The function `handleAddItem` adds a new item to an array of items if the input value is not
      * empty.
      */
-    let somethinghere;
     const handleAddItem = () => {
         if (inputValue.trim() !== "") {
             fetch("http://localhost:4000/tasks", {

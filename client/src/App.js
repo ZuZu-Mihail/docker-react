@@ -1,7 +1,7 @@
 import { React } from "react";
 import Auth from "./components/auth/auth";
 import Home from "./Home";
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 const App = () => {
 
