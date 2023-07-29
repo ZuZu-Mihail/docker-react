@@ -1,8 +1,6 @@
 import React from "react";
 import "./item.css";
 
-import { useState } from "react";
-
 
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -13,11 +11,18 @@ const cookies = new Cookies();
 
 const mailCookies = cookies.get("UserMail");
 
+/**
+ * The function `formatDate` takes a date object as input and returns a formatted string in the format
+ * "dd-mm-yyyy".
+ * @param date - The `date` parameter is a JavaScript `Date` object, which represents a specific date
+ * and time.
+ * @returns The formatted date string in the format "DD-MM-YYYY".
+ */
 function formatDate(date) {
     const currentMonth = date.getMonth();
     const monthString = currentMonth >= 10 ? currentMonth : `0${currentMonth}`;
     const currentDate = date.getDate();
-    const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
+    // const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
     return `${currentDate}-${monthString}-${date.getFullYear()}`;
 }
 
@@ -79,6 +84,10 @@ const Item = (props) => {
                 console.log(err.message);
             });
     }
+    /* The code snippet is making a GET request to the server at "http://localhost:4000/users/email/" +
+    mailCookies to retrieve user data based on the email stored in the mailCookies variable. It includes
+    the email as a parameter in the URL and specifies the request method as GET. The request also
+    includes the "Content-Type" header set to "application/json". */
     fetch("http://localhost:4000/users/email/" + mailCookies, {
         method: "GET",
         headers: {
@@ -129,8 +138,15 @@ const Item = (props) => {
                         </span>
 
                     } */}
+                    
+{/* The code snippet is rendering a `<span>` element with the class name "assignedContent". Inside the
+`<span>`, it checks the value of the `roleCookies` variable. If the value is "admin", it checks if
+the `props.item.assigned` value is truthy. If it is, it renders a `<Button>` element with the
+variant "danger" and an `onClick` event handler that calls the `handleRemoveAssign` function. If
+`props.item.assigned` is falsy, it renders a `<Button>` element with the variant "primary" and an
+`onClick` event handler that calls the `handleTake` function. */}
                     <span className="assignedContent">
-                        {/* {props.item.assigned ? props.item.assigned : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button>} */}
+
                         {roleCookies === "admin" ? props.item.assigned ?
                             <Button variant="danger" type="submit" onClick={handleRemoveAssign}>{props.item.assigned}</Button> : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button> :
                             props.item.assigned ? props.item.assigned : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button>
