@@ -37,6 +37,8 @@ const Login = (props) => {
 
         setLogin(true);
 
+        
+
         // console.log(data);
         
           window.location.href = "/";

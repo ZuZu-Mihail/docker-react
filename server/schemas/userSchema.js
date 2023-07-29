@@ -13,6 +13,10 @@ const userSchema = new Schema(
       }
     },
     password: { type: String, required: true },
+    role : { type: String, required: true, default: 'member' },
+    // tasks: [{ type: mongoose.Types.ObjectId, ref: "Tasks" }],
+    created: { type: Date, default: Date.now },
+
   }
 );
 

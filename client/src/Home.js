@@ -4,9 +4,13 @@ import ItemProvider from "./providers/itemProvider/provider";
 import Input from "./components/input/input";
 import Tabel from "./components/tabel/tabel";
 
+
 import { Container, Button } from "react-bootstrap";
 
 import Cookies from "universal-cookie";
+
+
+
 const cookies = new Cookies();
 
 const mailCookies = cookies.get("UserMail");
@@ -16,6 +20,7 @@ const logout = () => {
     // destroy the cookie
     cookies.remove("UserMail", { path: "/" });
     cookies.remove("UserName", { path: "/" });
+    cookies.remove("UserRole", { path: "/" });
     window.location.href = "/auth/";
 }
 
@@ -36,6 +41,9 @@ const Home = () => {
                 .then((response) => response.json())
                 .then((data) => {
                     cookies.set("UserName", data.name, {
+                        path: "/",
+                    });
+                    cookies.set("UserRole", data.role, {
                         path: "/",
                     });
                     // console.log(data.name);
@@ -60,13 +68,18 @@ const Home = () => {
                 <h3 className="text-center text-danger">{message}</h3>
 
             </Container>
-            <ItemProvider>
-                <div className="app">
-                    <h1 className="title">Tasks List</h1>
-                    <Input/>
-                    <Tabel />
-                </div>
-            </ItemProvider>
+
+                <ItemProvider>
+                    <div className="app">
+                        <h1 className="title">Tasks List</h1>
+                        <Input />
+                        {/* <Tabel /> */}
+
+                        <Tabel />
+
+                    </div>
+                </ItemProvider>
+
             <div className="col-md-12 text-center">
                 <Button type="submit" variant="danger" onClick={() => logout()}>
                     Logout
