@@ -73,7 +73,6 @@ const Home = () => {
                     <div className="app">
                         <h1 className="title">Tasks List</h1>
                         <Input />
-                        {/* <Tabel /> */}
 
                         <Tabel />
 

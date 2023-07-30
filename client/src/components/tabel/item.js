@@ -138,8 +138,8 @@ const Item = (props) => {
                         </span>
 
                     } */}
-                    
-{/* The code snippet is rendering a `<span>` element with the class name "assignedContent". Inside the
+
+                    {/* The code snippet is rendering a `<span>` element with the class name "assignedContent". Inside the
 `<span>`, it checks the value of the `roleCookies` variable. If the value is "admin", it checks if
 the `props.item.assigned` value is truthy. If it is, it renders a `<Button>` element with the
 variant "danger" and an `onClick` event handler that calls the `handleRemoveAssign` function. If

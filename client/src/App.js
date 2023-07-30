@@ -3,6 +3,7 @@ import Auth from "./components/auth/auth";
 import Home from "./Home";
 import { Route, Routes } from 'react-router-dom';
 
+
 const App = () => {
 
 
@@ -11,6 +12,7 @@ const App = () => {
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/auth" element={<Auth />} />
+            {/* <Route path="/auth2" element={<Auth2 />} /> */}
         </Routes>
             {/* <ItemProvider>
                 <div className="app">

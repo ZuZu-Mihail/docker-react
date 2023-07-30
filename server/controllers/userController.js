@@ -22,7 +22,7 @@ const userController = {
   getById: async function (req, res) {
     let user = await userModel.getUserById(req.params.id);
 
-    res.status(200).json(user);
+    res.status(200).json(user); 
   },
 
   getByName: async function (req, res) {
@@ -43,17 +43,17 @@ const userController = {
         // console.log("parola hashed: " + hashedPassword);
         let addedUser = userModel.addUser({
           name: req.body.name,
-          email: req.body.email,
+          email: req.body.email, 
           password: hashedPassword
         });
-        res.status(200).json(addedUser);
+        res.status(200).json(addedUser); 
       })
       .catch((e) => {
         response.status(500).send({
           message: "Password was not hashed successfully",
           e,
         });
-      });
+      }); 
     // let addedUser = await userModel.addUser(req.body);
 
 
@@ -68,7 +68,7 @@ const userController = {
   edit: async function (req, res) {
     let editedUser = userModel.editUser(
       req.params.id,
-      req.body
+      req.body 
     );
 
     res.status(200).json(editedUser);
