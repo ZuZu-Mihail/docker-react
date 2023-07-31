@@ -31,7 +31,7 @@ function Input(props) {
                 },
                 body: JSON.stringify({
                     name: inputValue,
-                    isChecked: false
+                    isChecked: false,
                 }),
             })
                 .then((response) => response.json())
