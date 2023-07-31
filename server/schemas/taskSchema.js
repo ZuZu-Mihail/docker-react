@@ -7,6 +7,7 @@ const taskSchema = new Schema({
     user: { type: mongoose.Types.ObjectId, ref: "Users" },
     assigned: { type: String, default: null },
     created: { type: Date, default: Date.now },
+    description: { type: String, default: null },
 
 
 }

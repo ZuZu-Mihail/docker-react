@@ -5,6 +5,7 @@ import "./input.css";
 function Input(props) {
     const { items, setItems } = useContext(ItemContext);
     const [inputValue, setInputValue] = useState("");
+    const [inputDescription, setInputDescription] = useState("");
 
 
 
@@ -16,6 +17,9 @@ function Input(props) {
      */
     function handleInputChange(event) {
         setInputValue(event.target.value);
+    }
+    function handleInputChangeDes(event) {
+        setInputDescription(event.target.value);
     }
 
     /**
@@ -32,6 +36,7 @@ function Input(props) {
                 body: JSON.stringify({
                     name: inputValue,
                     isChecked: false,
+                    description: inputDescription,
                 }),
             })
                 .then((response) => response.json())
@@ -46,6 +51,8 @@ function Input(props) {
                 });
         }
         setInputValue("");
+        setInputDescription("");
+        Setshow(false);
         // setItems([
         //     ...items,
         //     {
@@ -71,6 +78,10 @@ function Input(props) {
         }
     };
 
+    const [show, Setshow] = useState(false);
+    const handleDescription = () => {
+        Setshow(!show);
+    }
     return (
         <div className="inputContainer">
             <label className="inputPromt" htmlFor="input-field">
@@ -91,6 +102,27 @@ function Input(props) {
             <button className="addItemButton" onClick={handleAddItem}>
                 Add task
             </button>
+            <br />
+
+            <button className="btn btn-primary" onClick={handleDescription}>
+                Add a description
+            </button>
+            <br />
+            <textarea
+                style={{
+                    backgroundColor: props.backgroundColor,
+                    color: props.textColor,
+                }}
+                id="desc-field"
+                hidden={!show}
+                rows={4}
+                cols={40}
+                value={inputDescription}
+                onChange={handleInputChangeDes}
+
+            />
+            <br />
+
         </div>
     );
 }
