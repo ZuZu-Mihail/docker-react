@@ -29,6 +29,7 @@ function formatDate(date) {
 let usernameCookies;
 let roleCookies;
 
+
 const Item = (props) => {
     /**
      * The `handleDelete` function filters out the item with a specific id from the `props.items` array and
@@ -98,16 +99,15 @@ const Item = (props) => {
         .then((data) => {
             usernameCookies = data.name;
             roleCookies = data.role;
+            cookies.set("UserRole", roleCookies, {
+                path: "/",
+              });
         })
         .catch((err) => {
             console.log(err.message);
         }
         )
 
-
-    // if (props.item.assigned === null) {
-    //     setassigned(false);
-    // }
 
     return (
         <>
@@ -128,16 +128,7 @@ const Item = (props) => {
                     {formatDate(new Date(props.item.created))}
                 </td>
                 <td className="assigned">
-                    {/* {assigned ?
-                        <span className="assignedContent">
-                            {props.item.assigned}
-                        </span>
-                        :
-                        <span className="assignedContent">
-                            Not assigned
-                        </span>
 
-                    } */}
 
                     {/* The code snippet is rendering a `<span>` element with the class name "assignedContent". Inside the
 `<span>`, it checks the value of the `roleCookies` variable. If the value is "admin", it checks if

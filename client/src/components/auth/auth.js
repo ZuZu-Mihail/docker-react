@@ -85,9 +85,7 @@ function Auth() {
             .then((data) => {
                 if (data) {
                     if (data.email === email) {
-                        console.log(data.email + " from db");
-                        console.log(email + " from form");
-                        console.log(mailTest + " from test");
+
                         alert("Acest email exista deja:" + email);
                     }
                 }

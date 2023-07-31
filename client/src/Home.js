@@ -14,6 +14,9 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
 const mailCookies = cookies.get("UserMail");
+
+const roleCookies = cookies.get("UserRole");
+
 // const userCookies = cookies.get("UserName");
 
 const logout = () => {
@@ -47,7 +50,7 @@ const Home = () => {
                         path: "/",
                     });
                     // console.log(data.name);
-                    setMessage(data.name + ", You are logged in with your email address " + mailCookies);
+                    setMessage(data.name + ", You are logged in with your email address " + mailCookies + " and you have the role of "+ roleCookies +".");
                 })
                 .catch((err) => {
                     console.log(err.message);
@@ -65,7 +68,7 @@ const Home = () => {
     return (
         <>
             <Container >
-                <h3 className="text-center text-danger">{message}</h3>
+                <h4 className="text-center text-danger">{message}</h4>
 
             </Container>
 
@@ -84,6 +87,7 @@ const Home = () => {
                     Logout
                 </Button>
             </div>
+            <br />
         </>
     );
 };
