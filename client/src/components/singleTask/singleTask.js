@@ -7,6 +7,8 @@ import { Form, Button } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 
+import Dropdown from 'react-bootstrap/Dropdown';
+
 // import { BsArrowLeft } from "bootstrap-icons";
 
 import "./singleTask.css";
@@ -56,6 +58,7 @@ function SingleTask() {
     const [dateTask, setDateTask] = useState(Date.now());
     const [isCheckedTask, setisCheckedTask] = useState(false);
     const [assignedTask, setassignedTask] = useState(null);
+    const [status, setStatus] = useState("Not Started");
 
     /* The above code is using the `useInterval` function to repeatedly execute a block of code every
     1000 milliseconds (1 second). */
@@ -74,6 +77,7 @@ function SingleTask() {
                 setDateTask(formatDate(new Date(data.created)));
                 setisCheckedTask(data.isChecked);
                 setassignedTask(data.assigned);
+                setStatus(data.status);
             })
             .catch((err) => {
                 console.log(err.message);
@@ -193,6 +197,27 @@ function SingleTask() {
         setTempDescriptionTask(event.target.value);
     }
 
+    const onSelect = (eventKey, event) => {
+        event.preventDefault();
+        event.persist();
+        event.stopPropagation();
+        console.log(eventKey) // selected event will trigger
+
+        fetch("http://localhost:4000/tasks/" + id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                status: eventKey
+            }),
+        })
+            .catch((err) => {
+                console.log(err.message);
+            });
+
+    }
+
     return (
         <>
             <div className="SingleTask">
@@ -212,7 +237,8 @@ function SingleTask() {
 
                     <label className="singleTask__label" htmlFor="isCheckedTask">Status:</label>
 
-                    {(assignedTask === usernameCookies) || (roleCookies === "admin") ?
+                    {/* {(assignedTask === usernameCookies) || (roleCookies === "admin") ? */}
+                    { (roleCookies === "admin") ?
                         (<>
                             <input
                                 type="checkbox"
@@ -247,11 +273,51 @@ function SingleTask() {
 
                         {roleCookies === "admin" ? assignedTask ?
                             <Button variant="danger" type="submit" onClick={handleRemoveAssign}>{assignedTask}</Button> : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button> :
-                            assignedTask ? assignedTask : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button>
+                            assignedTask ? "" : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button>
 
                         }
+
+
+                        {(assignedTask === usernameCookies) || (roleCookies === "admin") ?
+                            <>
+                                <Dropdown onSelect={onSelect}>
+                                    <Dropdown.Toggle variant={status === "Not Started" ? "danger" : status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled={isCheckedTask}>
+                                        {status ? status : "Not started"}
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
+
+                                        <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                        <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
+
+                                    </Dropdown.Menu>
+                                </Dropdown>
+
+                            </>
+                            :
+                            <>
+                                <Dropdown onSelect={onSelect}>
+                                    <Dropdown.Toggle variant={status === "Not Started" ? "danger" : status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled>
+                                        {status ? status : "Not started"}
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
+
+                                        <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                        <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
+
+                                    </Dropdown.Menu>
+                                </Dropdown>
+
+                            </>
+                        }
+
                         <br />
                         <br />
+
+
 
                         {roleCookies === "admin" ? (<>
                             <div className="adminZone">

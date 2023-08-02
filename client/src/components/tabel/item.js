@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "react-bootstrap";
-
+import Dropdown from 'react-bootstrap/Dropdown';
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
@@ -19,13 +19,13 @@ const mailCookies = cookies.get("UserMail");
  * and time.
  * @returns The formatted date string in the format "DD-MM-YYYY".
  */
-function formatDate(date) {
-    const currentMonth = date.getMonth();
-    const monthString = currentMonth >= 10 ? currentMonth : `0${currentMonth}`;
-    const currentDate = date.getDate();
-    // const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
-    return `${currentDate}-${monthString}-${date.getFullYear()}`;
-}
+// function formatDate(date) {
+//     const currentMonth = date.getMonth();
+//     const monthString = currentMonth >= 10 ? currentMonth : `0${currentMonth}`;
+//     const currentDate = date.getDate();
+//     // const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
+//     return `${currentDate}-${monthString}-${date.getFullYear()}`;
+// }
 
 let usernameCookies;
 let roleCookies;
@@ -109,6 +109,26 @@ const Item = (props) => {
         }
         )
 
+    const onSelect = (eventKey, event) => {
+        event.preventDefault();
+        event.persist();
+        event.stopPropagation();
+        console.log(eventKey) // selected event will trigger
+
+        fetch("http://localhost:4000/tasks/" + props.item._id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                status: eventKey
+            }),
+        })
+            .catch((err) => {
+                console.log(err.message);
+            });
+
+    }
 
     return (
         <>
@@ -125,9 +145,9 @@ const Item = (props) => {
                         <Link to={"/task/" + props.item._id}>{props.item.name}</Link>
                     </span>
                 </td>
-                <td>
+                {/* <td>
                     {formatDate(new Date(props.item.created))}
-                </td>
+                </td> */}
                 <td className="assigned">
 
 
@@ -149,7 +169,8 @@ variant "danger" and an `onClick` event handler that calls the `handleRemoveAssi
 
 
                 <td>
-                    {(props.item.assigned === usernameCookies) || (roleCookies === "admin") ?
+                    {/* {(props.item.assigned === usernameCookies) || (roleCookies === "admin") ? */}
+                    {(roleCookies === "admin") ?
                         <input
                             type="checkbox"
                             checked={props.item.isChecked}
@@ -161,6 +182,43 @@ variant "danger" and an `onClick` event handler that calls the `handleRemoveAssi
                             disabled
                             checked={props.item.isChecked}
                         />
+                    }
+                </td>
+                <td>
+                    {(props.item.assigned === usernameCookies) || (roleCookies === "admin") ?
+                        <>
+                            <Dropdown onSelect={onSelect}>
+                                <Dropdown.Toggle variant={props.item.status === "Not Started" ? "danger" : props.item.status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled={props.item.isChecked}>
+                                    {props.item.status ? props.item.status : "Not started"}
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
+
+                                    <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                    <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
+
+                                </Dropdown.Menu>
+                            </Dropdown>
+
+                        </>
+                        :
+                        <>
+                            <Dropdown onSelect={onSelect}>
+                                <Dropdown.Toggle variant={props.item.status === "Not Started" ? "danger" : props.item.status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled>
+                                    {props.item.status ? props.item.status : "Not started"}
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
+
+                                    <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                    <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
+
+                                </Dropdown.Menu>
+                            </Dropdown>
+
+                        </>
                     }
                 </td>
                 <td>

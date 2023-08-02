@@ -99,9 +99,10 @@ function Tabel() {
                             <SortButton items={items} setItems={setItems} />
                             <div></div>
                         </th>
-                        <th className="tabelHeadFinished">Created at</th>
+                        {/* <th className="tabelHeadFinished">Created at</th> */}
                         <th className="tabelHeadAssigned">Assigned to</th>
                         <th className="tabelHeadFinished">Finished</th>
+                        <th className="tabelHeadDescription">Status</th>
                         <th className="tableHeadRemove">Remove?</th>
                     </tr>
                 </thead>
