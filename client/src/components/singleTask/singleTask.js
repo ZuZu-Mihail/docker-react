@@ -14,8 +14,11 @@ import "./singleTask.css";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
-const usernameCookies = cookies.get("UserName");
-const roleCookies = cookies.get("UserRole");
+const mailCookies = cookies.get("UserMail");
+let usernameCookies;
+let roleCookies;
+// const usernameCookies = cookies.get("UserName");
+// const roleCookies = cookies.get("UserRole");
 
 function useInterval(callback, delay) {
     const savedCallback = useRef();
@@ -54,7 +57,11 @@ function SingleTask() {
     const [isCheckedTask, setisCheckedTask] = useState(false);
     const [assignedTask, setassignedTask] = useState(null);
 
+    /* The above code is using the `useInterval` function to repeatedly execute a block of code every
+    1000 milliseconds (1 second). */
     useInterval(() => {
+        /* The above code is making a GET request to the URL "http://localhost:4000/tasks/" + id, where "id" is
+        a variable representing the task ID. It is setting the "Content-Type" header to "application/json". */
         fetch("http://localhost:4000/tasks/" + id, {
             headers: {
                 "Content-Type": "application/json",
@@ -71,6 +78,29 @@ function SingleTask() {
             .catch((err) => {
                 console.log(err.message);
             });
+
+        /* The above code is making a GET request to the "http://localhost:4000/users/email/" endpoint with the
+        value of the "mailCookies" variable appended to the URL. It is setting the "Content-Type" header to
+        "application/json". */
+        fetch("http://localhost:4000/users/email/" + mailCookies, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                usernameCookies = data.name;
+                roleCookies = data.role;
+                cookies.set("UserRole", roleCookies, {
+                    path: "/",
+                });
+            })
+            .catch((err) => {
+                console.log(err.message);
+            }
+            )
+
     }, 1000);
     useEffect(() => {
         document.body.classList.add('bodyTask');
@@ -174,7 +204,7 @@ function SingleTask() {
                 </div>
                 <div className="container_copy">
 
-                    
+
                     <h3 className="singleTask__date">Task Date: {dateTask}</h3>
                     <h1 className="singleTask__title">{nameTask}</h1>
                     <p className="singleTask__description">{descriptionTask}</p>
@@ -193,7 +223,7 @@ function SingleTask() {
                                 }
                             />
 
-                            {isCheckedTask === false ? ('Not Completed') : ('Completed')}
+                            <i> {isCheckedTask === false ? ('Not Completed') : ('Completed')}</i>
 
                         </>
                         ) : (<>
@@ -244,7 +274,7 @@ function SingleTask() {
                                             <Form.Control as="textarea" rows={4} cols={40} type="text" placeholder="Enter new Description" defaultValue={descriptionTask} onChange={handleInputDesc} />
                                         </Form.Group>
 
-                                        
+
 
                                     </Form>
                                     <Button className="" variant="info" onClick={() => {

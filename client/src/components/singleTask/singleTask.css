@@ -9,6 +9,8 @@
   background-image: linear-gradient(to right bottom, #3f65a1, #3a5d92, #365684, #324e76, #2f4768);
   background-size: cover;
   background-repeat: no-repeat;
+  overflow: auto;
+max-height: 100vh;
 }
 
 .SingleTask {
