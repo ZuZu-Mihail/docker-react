@@ -13,7 +13,7 @@
 
 .SingleTask {
   background: #fff;
-  max-width: 500px;
+  max-width: 90em;
   border-radius: 10px;
   box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
   position: relative;
@@ -31,9 +31,9 @@
   z-index: 10;
   box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
   border-radius: 100%;
-  position: absolute;
-  left: -10%;
-  top: -13%;
+  /* position: absolute; */
+  left: -2%;
+  top: -4%;
   display: flex;
   align-items: center;
   justify-content: center;
