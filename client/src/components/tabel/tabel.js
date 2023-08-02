@@ -19,16 +19,8 @@ import SortButton from "../sortButton/sortButton";
 function Tabel() {
     const { items, setItems } = useContext(ItemContext);
     const [searchValue, setSearchValue] = useState("");
-    // const [circleColor, setCircleColor] = useState("#1b2c4e");
 
-    /* The `useEffect` hook in React is used to perform side effects in functional components. It takes
-    two arguments: a function and a dependency array. */
-    // useEffect(() => {
-    //     let red = Math.random() * 255;
-    //     let green = Math.random() * 255;
-    //     let blue = Math.random() * 255;
-    //     setCircleColor(`rgb(${red},${green},${blue})`);
-    // }, [items]);
+
 
     /* The `handleCheckboxChange` function is responsible for handling the change event when a
     checkbox is clicked. It takes the `id` of the item as a parameter. */
@@ -43,10 +35,10 @@ function Tabel() {
             item._id === _id ? { ...item, isChecked: !item.isChecked } : item
         );
         // console.log(updateditems);
-        
+
         const status = updateditems.find((item) => item._id === _id).isChecked;
 
-        fetch("http://localhost:4000/tasks/"+_id, {
+        fetch("http://localhost:4000/tasks/" + _id, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -58,7 +50,7 @@ function Tabel() {
             .catch((err) => {
                 console.log(err.message);
             });
-            setItems(updateditems);
+        setItems(updateditems);
     };
 
     /**
@@ -81,13 +73,13 @@ function Tabel() {
             item.name.toLowerCase().includes(searchValue.toLowerCase())
         )
         .map((item) => (
-            <Item
+             <Item
                 key={item._id}
                 item={item}
                 handleCheckboxChange={handleCheckboxChange}
                 setItems={setItems}
                 items={items}
-            />
+            /> 
         ));
 
     return (

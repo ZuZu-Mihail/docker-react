@@ -1,6 +1,7 @@
 import React from "react";
 import "./item.css";
 
+import { Link } from "react-router-dom";
 
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -101,7 +102,7 @@ const Item = (props) => {
             roleCookies = data.role;
             cookies.set("UserRole", roleCookies, {
                 path: "/",
-              });
+            });
         })
         .catch((err) => {
             console.log(err.message);
@@ -121,7 +122,7 @@ const Item = (props) => {
                             }`}
                     >
 
-                        {props.item.name}
+                        <Link to={"/task/" + props.item._id}>{props.item.name}</Link>
                     </span>
                 </td>
                 <td>
@@ -159,9 +160,6 @@ variant "danger" and an `onClick` event handler that calls the `handleRemoveAssi
                             type="checkbox"
                             disabled
                             checked={props.item.isChecked}
-                            onChange={() =>
-                                props.handleCheckboxChange(props.item._id)
-                            }
                         />
                     }
                 </td>
