@@ -40,6 +40,7 @@ function Auth() {
         // prevent the form from refreshing the whole page
         e.preventDefault();
 
+
         fetch("http://localhost:4000/users/auth", {
             method: "POST",
             headers: {
@@ -53,16 +54,28 @@ function Auth() {
             .then((response) => response.json())
             .then((data) => {
 
-                cookies.set("UserMail", email, {
-                    path: "/",
-                });
+                if (!data.message) {
 
-                setLogin(true);
-
-                window.location.href = "/";
+                    cookies.set("UserMail", data.email, {
+                        path: "/",
+                    });
+                    cookies.set("UserName", data.name, {
+                        path: "/",
+                    });
+                    cookies.set("UserRole", data.role, {
+                        path: "/",
+                    });
+                    
+                    setLogin(true);
+                    window.location.href = "/";
+                }
+                else {
+                    alert(data.message);
+                }
             })
             .catch((err) => {
                 console.log(err.message);
+                alert("Email sau parola gresita");
             });
 
     }
@@ -125,6 +138,7 @@ function Auth() {
     }
     useEffect(() => {
         document.body.classList.add('body');
+
 
         return () => {
             document.body.classList.remove('body');

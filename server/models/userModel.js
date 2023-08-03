@@ -65,16 +65,16 @@ const userModel = {
       let match = await bcrypt.compare(password, user.password);
       if (match) {
         // console.log("User is logged in " + user.name + " with password " + password);
-        return user;
+        return user; 
       } else {
-        throw new Error("Password is incorrect");
+        throw new Error("Password is incorrect"); 
       }
     } else {
       throw new Error("User doesn't exist");
     }
 
   },
-
+ 
   // deleteUser: async function (id) {
   //   let indexOfUserToDelete = this.users.findIndex(
   //     (currentUser) => currentUser.id === id

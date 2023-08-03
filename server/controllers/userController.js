@@ -49,7 +49,7 @@ const userController = {
         res.status(200).json(addedUser); 
       })
       .catch((e) => {
-        response.status(500).send({
+        res.status(500).send({
           message: "Password was not hashed successfully",
           e,
         });
@@ -61,8 +61,23 @@ const userController = {
 
   loginUser: async function (req, res) {
     let authUser = userModel.userLogin(req.body.email, req.body.password)
-  
-    res.status(200).json(authUser);
+    
+    // console.log(authUser);
+    authUser.then((data) => {
+      // console.log(data);
+      res.status(200).json(data);
+    })
+      .catch((err) => {
+        // console.log(err.message);
+        res.status(500).send({
+          message: err.message,
+          err,
+        });
+      });
+
+
+    // res.status(200).json(authUser); 
+
   },
 
   edit: async function (req, res) {

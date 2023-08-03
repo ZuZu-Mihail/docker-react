@@ -18,12 +18,15 @@ const cookies = new Cookies();
 
 const mailCookies = cookies.get("UserMail");
 let usernameCookies;
-let roleCookies;
 // const usernameCookies = cookies.get("UserName");
 // const roleCookies = cookies.get("UserRole");
 
+const roleCookiesOrigin = cookies.get("UserRole");
+
 function useInterval(callback, delay) {
     const savedCallback = useRef();
+
+
 
     // Remember the latest callback.
     useEffect(() => {
@@ -43,6 +46,8 @@ function useInterval(callback, delay) {
 }
 
 function SingleTask() {
+
+    const [roleCookies, setRoleCookies] = useState(roleCookiesOrigin);
 
     const { id } = useParams();
     function formatDate(date) {
@@ -72,38 +77,42 @@ function SingleTask() {
         })
             .then((response) => response.json())
             .then((data) => {
+
+
+                /* The above code is making a GET request to the "http://localhost:4000/users/email/" endpoint with the
+                value of the "mailCookies" variable appended to the URL. It is setting the "Content-Type" header to
+                "application/json". */
+                fetch("http://localhost:4000/users/email/" + mailCookies, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        usernameCookies = data.name;
+                        setRoleCookies(data.role);
+                        cookies.set("UserRole", roleCookies, {
+                            path: "/",
+                        });
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
+                    }
+                    )
                 setNameTask(data.name);
                 setDescriptionTask(data.description);
                 setDateTask(formatDate(new Date(data.created)));
                 setisCheckedTask(data.isChecked);
                 setassignedTask(data.assigned);
                 setStatus(data.status);
+
             })
             .catch((err) => {
                 console.log(err.message);
             });
 
-        /* The above code is making a GET request to the "http://localhost:4000/users/email/" endpoint with the
-        value of the "mailCookies" variable appended to the URL. It is setting the "Content-Type" header to
-        "application/json". */
-        fetch("http://localhost:4000/users/email/" + mailCookies, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                usernameCookies = data.name;
-                roleCookies = data.role;
-                cookies.set("UserRole", roleCookies, {
-                    path: "/",
-                });
-            })
-            .catch((err) => {
-                console.log(err.message);
-            }
-            )
+
 
     }, 1000);
     useEffect(() => {
@@ -238,7 +247,7 @@ function SingleTask() {
                     <label className="singleTask__label" htmlFor="isCheckedTask">Status:</label>
 
                     {/* {(assignedTask === usernameCookies) || (roleCookies === "admin") ? */}
-                    { (roleCookies === "admin") ?
+                    {(roleCookies === "admin") ?
                         (<>
                             <input
                                 type="checkbox"
