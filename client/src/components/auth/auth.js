@@ -117,7 +117,6 @@ function Auth() {
                         .then((response) => response.json())
                         .then((data) => {
                             setRegister(true);
-                            console.log(data);
                             cookies.set("UserMail", email, {
                                 path: "/",
                             });
