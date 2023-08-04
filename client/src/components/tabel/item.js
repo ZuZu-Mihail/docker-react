@@ -130,99 +130,103 @@ const Item = (props) => {
 
     }
 
+    let showOthers = sessionStorage.getItem("isCheckedMine");
+
     return (
         <>
-            <tr>
-                {/* <td>
+            {showOthers === "false" ? (
+
+                <tr>
+                    {/* <td>
                     {props.item._id}
                 </td> */}
-                <td>
-                    <span
-                        className={`itemContent ${props.item.isChecked ? "crossed" : ""
-                            }`}
-                    >
+                    <td>
+                        <span
+                            className={`itemContent ${props.item.isChecked ? "crossed" : ""
+                                }`}
+                        >
 
-                        <Link to={"/task/" + props.item._id}>{props.item.name}</Link>
-                    </span>
-                </td>
-                {/* <td>
+                            <Link to={"/task/" + props.item._id}>{props.item.name}</Link>
+                        </span>
+                    </td>
+                    {/* <td>
                     {formatDate(new Date(props.item.created))}
                 </td> */}
-                <td className="assigned">
+                    <td className="assigned">
 
 
-                    {/* The code snippet is rendering a `<span>` element with the class name "assignedContent". Inside the
+                        {/* The code snippet is rendering a `<span>` element with the class name "assignedContent". Inside the
 `<span>`, it checks the value of the `roleCookies` variable. If the value is "admin", it checks if
 the `props.item.assigned` value is truthy. If it is, it renders a `<Button>` element with the
 variant "danger" and an `onClick` event handler that calls the `handleRemoveAssign` function. If
 `props.item.assigned` is falsy, it renders a `<Button>` element with the variant "primary" and an
 `onClick` event handler that calls the `handleTake` function. */}
-                    <span className="assignedContent">
+                        <span className="assignedContent">
 
-                        {roleCookies === "admin" ? props.item.assigned ?
-                            <Button variant="danger" type="submit" onClick={handleRemoveAssign}>{props.item.assigned}</Button> : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button> :
-                            props.item.assigned ? props.item.assigned : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button>
+                            {roleCookies === "admin" ? props.item.assigned ?
+                                <Button variant="danger" type="submit" onClick={handleRemoveAssign}>{props.item.assigned}</Button> : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button> :
+                                props.item.assigned ? props.item.assigned : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button>
 
-                        }
-                    </span>
-                </td>
-
-
-                <td>
-                    {/* {(props.item.assigned === usernameCookies) || (roleCookies === "admin") ? */}
-                    {(roleCookies === "admin") ?
-                        <input
-                            type="checkbox"
-                            checked={props.item.isChecked}
-                            onChange={() =>
-                                props.handleCheckboxChange(props.item._id)
                             }
-                        /> : <input
-                            type="checkbox"
-                            disabled
-                            checked={props.item.isChecked}
-                        />
-                    }
-                </td>
-                <td>
-                    {(props.item.assigned === usernameCookies) || (roleCookies === "admin") ?
-                        <>
-                            <Dropdown onSelect={onSelect}>
-                                <Dropdown.Toggle variant={props.item.status === "Not Started" ? "danger" : props.item.status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled={props.item.isChecked}>
-                                    {props.item.status ? props.item.status : "Not started"}
-                                </Dropdown.Toggle>
+                        </span>
+                    </td>
 
-                                <Dropdown.Menu>
-                                    <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
 
-                                    <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
-                                    <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
+                    <td>
+                        {/* {(props.item.assigned === usernameCookies) || (roleCookies === "admin") ? */}
+                        {(roleCookies === "admin") ?
+                            <input
+                                type="checkbox"
+                                checked={props.item.isChecked}
+                                onChange={() =>
+                                    props.handleCheckboxChange(props.item._id)
+                                }
+                            /> : <input
+                                type="checkbox"
+                                disabled
+                                checked={props.item.isChecked}
+                            />
+                        }
+                    </td>
+                    <td>
+                        {(props.item.assigned === usernameCookies) || (roleCookies === "admin") ?
+                            <>
+                                <Dropdown onSelect={onSelect}>
+                                    <Dropdown.Toggle variant={props.item.status === "Not Started" ? "danger" : props.item.status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled={props.item.isChecked}>
+                                        {props.item.status ? props.item.status : "Not started"}
+                                    </Dropdown.Toggle>
 
-                                </Dropdown.Menu>
-                            </Dropdown>
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
 
-                        </>
-                        :
-                        <>
-                            <Dropdown onSelect={onSelect}>
-                                <Dropdown.Toggle variant={props.item.status === "Not Started" ? "danger" : props.item.status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled>
-                                    {props.item.status ? props.item.status : "Not started"}
-                                </Dropdown.Toggle>
+                                        <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                        <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
 
-                                <Dropdown.Menu>
-                                    <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
 
-                                    <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
-                                    <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
+                            </>
+                            :
+                            <>
+                                <Dropdown onSelect={onSelect}>
+                                    <Dropdown.Toggle variant={props.item.status === "Not Started" ? "danger" : props.item.status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled>
+                                        {props.item.status ? props.item.status : "Not started"}
+                                    </Dropdown.Toggle>
 
-                                </Dropdown.Menu>
-                            </Dropdown>
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
 
-                        </>
-                    }
-                </td>
-                <td>
-                    {/* <button className="sortIcon">
+                                        <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                        <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
+
+                                    </Dropdown.Menu>
+                                </Dropdown>
+
+                            </>
+                        }
+                    </td>
+                    <td>
+                        {/* <button className="sortIcon">
                         <FontAwesomeIcon
                             icon={faXmark}
                             style={{ color: "#1a2b4e" }}
@@ -230,16 +234,131 @@ variant "danger" and an `onClick` event handler that calls the `handleRemoveAssi
                         />
                     </button> */}
 
-                    {roleCookies === "admin" ?
-                        (
-                            <Button variant="danger" className="btn-close" onClick={handleDelete}></Button>
-                        ) : (
-                            <Button variant="danger" className="btn-close" onClick={handleDelete} disabled></Button>
-                        )}
+                        {roleCookies === "admin" ?
+                            (
+                                <Button variant="danger" className="btn-close" onClick={handleDelete}></Button>
+                            ) : (
+                                <Button variant="danger" className="btn-close" onClick={handleDelete} disabled></Button>
+                            )}
 
 
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            ) : (
+                (props.item.assigned === usernameCookies) || (roleCookies === "admin") || (!props.item.assigned) ? (
+                    <tr>
+                        {/* <td>
+                        {props.item._id}
+                    </td> */}
+                        <td>
+                            <span
+                                className={`itemContent ${props.item.isChecked ? "crossed" : ""
+                                    }`}
+                            >
+
+                                <Link to={"/task/" + props.item._id}>{props.item.name}</Link>
+                            </span>
+                        </td>
+                        {/* <td>
+                        {formatDate(new Date(props.item.created))}
+                    </td> */}
+                        <td className="assigned">
+
+
+                            {/* The code snippet is rendering a `<span>` element with the class name "assignedContent". Inside the
+    `<span>`, it checks the value of the `roleCookies` variable. If the value is "admin", it checks if
+    the `props.item.assigned` value is truthy. If it is, it renders a `<Button>` element with the
+    variant "danger" and an `onClick` event handler that calls the `handleRemoveAssign` function. If
+    `props.item.assigned` is falsy, it renders a `<Button>` element with the variant "primary" and an
+    `onClick` event handler that calls the `handleTake` function. */}
+                            <span className="assignedContent">
+
+                                {roleCookies === "admin" ? props.item.assigned ?
+                                    <Button variant="danger" type="submit" onClick={handleRemoveAssign}>{props.item.assigned}</Button> : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button> :
+                                    props.item.assigned ? props.item.assigned : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button>
+
+                                }
+                            </span>
+                        </td>
+
+
+                        <td>
+                            {/* {(props.item.assigned === usernameCookies) || (roleCookies === "admin") ? */}
+                            {(roleCookies === "admin") ?
+                                <input
+                                    type="checkbox"
+                                    checked={props.item.isChecked}
+                                    onChange={() =>
+                                        props.handleCheckboxChange(props.item._id)
+                                    }
+                                /> : <input
+                                    type="checkbox"
+                                    disabled
+                                    checked={props.item.isChecked}
+                                />
+                            }
+                        </td>
+                        <td>
+                            {(props.item.assigned === usernameCookies) || (roleCookies === "admin") ?
+                                <>
+                                    <Dropdown onSelect={onSelect}>
+                                        <Dropdown.Toggle variant={props.item.status === "Not Started" ? "danger" : props.item.status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled={props.item.isChecked}>
+                                            {props.item.status ? props.item.status : "Not started"}
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
+
+                                            <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                            <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
+
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+
+                                </>
+                                :
+                                <>
+                                    <Dropdown onSelect={onSelect}>
+                                        <Dropdown.Toggle variant={props.item.status === "Not Started" ? "danger" : props.item.status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled>
+                                            {props.item.status ? props.item.status : "Not started"}
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
+
+                                            <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                            <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
+
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+
+                                </>
+                            }
+                        </td>
+                        <td>
+                            {/* <button className="sortIcon">
+                            <FontAwesomeIcon
+                                icon={faXmark}
+                                style={{ color: "#1a2b4e" }}
+                                onClick={handleDelete}
+                            />
+                        </button> */}
+
+                            {roleCookies === "admin" ?
+                                (
+                                    <Button variant="danger" className="btn-close" onClick={handleDelete}></Button>
+                                ) : (
+                                    <Button variant="danger" className="btn-close" onClick={handleDelete} disabled></Button>
+                                )}
+
+
+                        </td>
+                    </tr>
+                ) : (
+                    <></>
+                )
+            )
+            }
         </>
     );
 };

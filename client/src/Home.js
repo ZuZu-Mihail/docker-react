@@ -1,8 +1,11 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import ItemProvider from "./providers/itemProvider/provider";
 import Input from "./components/input/input";
 import Tabel from "./components/tabel/tabel";
+
+import { Form } from "react-bootstrap";
+
 
 
 import { Container, Button } from "react-bootstrap";
@@ -26,6 +29,8 @@ const logout = () => {
     cookies.remove("UserMail", { path: "/" });
     cookies.remove("UserName", { path: "/" });
     cookies.remove("UserRole", { path: "/" });
+    sessionStorage.clear();
+    localStorage.clear();
     window.location.href = "/auth/";
 }
 
@@ -34,9 +39,12 @@ const Home = () => {
     const [message, setMessage] = useState("");
 
     useEffect(() => {
+
+        sessionStorage.setItem("isCheckedMine", false);
+
         if (mailCookies) {
 
-            setMessage(userCookies + ", You are logged in with your email address " + mailCookies + " and you have the role of "+ roleCookies +".");
+            setMessage(userCookies + ", You are logged in with your email address " + mailCookies + " and you have the role of " + roleCookies + ".");
             // fetch("http://localhost:4000/users/email/" + mailCookies, {
             //     method: "GET",
             //     headers: {
@@ -74,15 +82,16 @@ const Home = () => {
 
             </Container>
 
-                <ItemProvider>
-                    <div className="app">
-                        <h1 className="title">Tasks List</h1>
-                        <Input />
+            <ItemProvider>
+                <div className="app">
+                    <h1 className="title">Tasks List</h1>
+                    
+                    <Input />
 
-                        <Tabel />
+                    <Tabel />
 
-                    </div>
-                </ItemProvider>
+                </div>
+            </ItemProvider>
 
             <div className="col-md-12 text-center">
                 <Button type="submit" variant="danger" onClick={() => logout()}>

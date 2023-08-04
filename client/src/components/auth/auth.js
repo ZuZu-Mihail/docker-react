@@ -19,6 +19,8 @@ const logout = () => {
     cookies.remove("UserMail", { path: "/" });
     cookies.remove("UserName", { path: "/" });
     cookies.remove("UserRole", { path: "/" });
+    sessionStorage.clear();
+    localStorage.clear();
     window.location.href = "/auth/";
 }
 

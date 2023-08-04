@@ -5,6 +5,10 @@ import Item from "./item";
 import Search from "../search/search";
 import SortButton from "../sortButton/sortButton";
 
+import { Container, Form } from "react-bootstrap";
+
+import Cookies from "universal-cookie";
+
 /**
  * The `Tabel` function is a React component that renders a table of items, with the ability to search
  * and sort the items.
@@ -14,6 +18,10 @@ import SortButton from "../sortButton/sortButton";
  * body. The header contains four columns: ID, Task, Finished, and Remove?. The body contains the
  * filtered items mapped to `Item` components.
  */
+
+const cookies = new Cookies();
+
+const roleCookies = cookies.get("UserRole");
 
 
 function Tabel() {
@@ -65,6 +73,15 @@ function Tabel() {
         setSearchValue(event.target.value);
     }
 
+
+    const [isCheckedMine, setIsCheckedMine] = useState(false);
+
+    const handleCheckboxChangeMine = () => {
+        setIsCheckedMine(!isCheckedMine);
+        sessionStorage.setItem("isCheckedMine", !isCheckedMine);
+    };
+
+
     /* The code is filtering the `items` array based on the `searchValue` and then mapping over the
     filtered items to create an array of `Item` components. */
 
@@ -73,13 +90,13 @@ function Tabel() {
             item.name.toLowerCase().includes(searchValue.toLowerCase())
         )
         .map((item) => (
-             <Item
+            <Item
                 key={item._id}
                 item={item}
                 handleCheckboxChange={handleCheckboxChange}
                 setItems={setItems}
                 items={items}
-            /> 
+            />
         ));
 
     return (
@@ -100,7 +117,24 @@ function Tabel() {
                             <div></div>
                         </th>
                         {/* <th className="tabelHeadFinished">Created at</th> */}
-                        <th className="tabelHeadAssigned">Assigned to</th>
+                        <th className="tabelHeadAssigned">
+                            Assigned to
+                            {(roleCookies !== "admin") ? (
+                                <Container className="">
+                                <Form>
+                                    <Form.Check
+                                        type="switch"
+                                        id="show-mine"
+                                        label="Don't show others"
+                                        checked={isCheckedMine}
+                                        onChange={handleCheckboxChangeMine}
+                                        />
+                                </Form>
+                            </Container>
+                            ) : (
+                                <></>
+                            )}
+                        </th>
                         <th className="tabelHeadFinished">Finished</th>
                         <th className="tabelHeadDescription">Status</th>
                         <th className="tableHeadRemove">Remove?</th>
