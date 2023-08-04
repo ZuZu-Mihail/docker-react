@@ -51,7 +51,7 @@ function SingleTask() {
 
     const { id } = useParams();
     function formatDate(date) {
-        const currentMonth = date.getMonth();
+        const currentMonth = date.getMonth()+1;
         const monthString = currentMonth >= 10 ? currentMonth : `0${currentMonth}`;
         const currentDate = date.getDate();
         // const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
