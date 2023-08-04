@@ -4,10 +4,6 @@ import ItemProvider from "./providers/itemProvider/provider";
 import Input from "./components/input/input";
 import Tabel from "./components/tabel/tabel";
 
-import { Form } from "react-bootstrap";
-
-
-
 import { Container, Button } from "react-bootstrap";
 
 import Cookies from "universal-cookie";

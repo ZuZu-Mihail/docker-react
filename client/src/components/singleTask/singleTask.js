@@ -65,6 +65,21 @@ function SingleTask() {
     const [assignedTask, setassignedTask] = useState(null);
     const [status, setStatus] = useState("Not Started");
 
+    var curr = new Date();
+    curr.setDate(curr.getDate()+1);
+    var date = curr.toISOString().substring(0, 10);
+
+    const [deadlineTask, setDeadline] = useState(date);
+
+    function defaultDedline(curr) {
+        if (curr === null)
+            return "";
+        curr = new Date(curr);
+        curr.setDate(curr.getDate());
+        var date = curr.toISOString().substring(0, 10);
+        return date;
+    }
+
     /* The above code is using the `useInterval` function to repeatedly execute a block of code every
     1000 milliseconds (1 second). */
     useInterval(() => {
@@ -106,6 +121,7 @@ function SingleTask() {
                 setisCheckedTask(data.isChecked);
                 setassignedTask(data.assigned);
                 setStatus(data.status);
+                setDeadline(data.deadline);
 
             })
             .catch((err) => {
@@ -205,6 +221,24 @@ function SingleTask() {
     function handleInputDesc(event) {
         setTempDescriptionTask(event.target.value);
     }
+    
+    const [tempDeadline, setTempDeadline] = useState(deadlineTask);
+    function handleInputDDLChange(event) {
+        if (event.target.value !== "") {
+            if (new Date(event.target.value) < new Date()) {
+                alert("You cannot set a deadline in the past");
+                var curr = new Date();
+                curr.setDate(curr.getDate() + 1);
+                var date = curr.toISOString().substring(0, 10);
+                setTempDeadline(date);
+            }
+            else
+                setTempDeadline(event.target.value);
+        }
+        else {
+            setTempDeadline(null);
+        }
+    }
 
     const onSelect = (eventKey, event) => {
         event.preventDefault();
@@ -240,6 +274,9 @@ function SingleTask() {
 
 
                     <h3 className="singleTask__date">Task Date: {dateTask}</h3>
+                    <h3 className="singleTask__deadline">
+                        {deadlineTask < Date.now ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depăsit/Nesetat"}
+                    </h3>
                     <h1 className="singleTask__title">{nameTask}</h1>
                     <p className="singleTask__description">{descriptionTask}</p>
                     {/* <h3>Task Status:  {isCheckedTask === false ? ('Not Completed') : ('Completed')}</h3> */}
@@ -349,6 +386,18 @@ function SingleTask() {
                                             <Form.Control as="textarea" rows={4} cols={40} type="text" placeholder="Enter new Description" defaultValue={descriptionTask} onChange={handleInputDesc} />
                                         </Form.Group>
 
+                                        <Form.Group controlId="ddl">
+                                            <Form.Label >Change the deadline</Form.Label>
+                                            <Form.Control
+                                                type="date"
+                                                name="ddl"
+                                                placeholder={defaultDedline(deadlineTask)}
+                                                // value={defaultDedline(deadlineTask)}
+                                                onChange={handleInputDDLChange}
+
+                                            />
+                                        </Form.Group>
+
 
 
                                     </Form>
@@ -360,7 +409,9 @@ function SingleTask() {
                                             },
                                             body: JSON.stringify({
                                                 name: nameTempTask,
-                                                description: descriptionTempTask
+                                                description: descriptionTempTask,
+                                                deadline: tempDeadline
+
                                             }),
                                         })
                                             .catch((err) => {

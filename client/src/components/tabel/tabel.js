@@ -116,6 +116,10 @@ function Tabel() {
                             <SortButton items={items} setItems={setItems} />
                             <div></div>
                         </th>
+                        <th>Deadline
+                            <br></br><i>*N/A - Ddl nesetat/depasit</i>
+                        </th>
+
                         {/* <th className="tabelHeadFinished">Created at</th> */}
                         <th className="tabelHeadAssigned">
                             Assigned to

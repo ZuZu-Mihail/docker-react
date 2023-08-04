@@ -19,13 +19,13 @@ const mailCookies = cookies.get("UserMail");
  * and time.
  * @returns The formatted date string in the format "DD-MM-YYYY".
  */
-// function formatDate(date) {
-//     const currentMonth = date.getMonth();
-//     const monthString = currentMonth >= 10 ? currentMonth : `0${currentMonth}`;
-//     const currentDate = date.getDate();
-//     // const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
-//     return `${currentDate}-${monthString}-${date.getFullYear()}`;
-// }
+function formatDate(date) {
+    const currentMonth = date.getMonth();
+    const monthString = currentMonth >= 10 ? currentMonth : `0${currentMonth}`;
+    const currentDate = date.getDate();
+    // const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
+    return `${currentDate}-${monthString}-${date.getFullYear()}`;
+}
 
 let usernameCookies;
 let roleCookies;
@@ -148,6 +148,10 @@ const Item = (props) => {
 
                             <Link to={"/task/" + props.item._id}>{props.item.name}</Link>
                         </span>
+                    </td>
+                    <td>
+                        {props.item.deadline < Date.now ? formatDate(new Date(props.item.deadline)) : "N/A"}
+                        {}
                     </td>
                     {/* <td>
                     {formatDate(new Date(props.item.created))}
