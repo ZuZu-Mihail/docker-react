@@ -263,6 +263,10 @@ variant "danger" and an `onClick` event handler that calls the `handleRemoveAssi
                                 <Link to={"/task/" + props.item._id}>{props.item.name}</Link>
                             </span>
                         </td>
+                        <td>
+                        {props.item.deadline < Date.now ? formatDate(new Date(props.item.deadline)) : "N/A"}
+                        {}
+                    </td>
                         {/* <td>
                         {formatDate(new Date(props.item.created))}
                     </td> */}
