@@ -13,6 +13,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 import "./singleTask.css";
 
+import { jsPDF } from 'jspdf';
+
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
@@ -51,7 +53,7 @@ function SingleTask() {
 
     const { id } = useParams();
     function formatDate(date) {
-        const currentMonth = date.getMonth()+1;
+        const currentMonth = date.getMonth() + 1;
         const monthString = currentMonth >= 10 ? currentMonth : `0${currentMonth}`;
         const currentDate = date.getDate();
         // const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
@@ -66,7 +68,7 @@ function SingleTask() {
     const [status, setStatus] = useState("Not Started");
 
     var curr = new Date();
-    curr.setDate(curr.getDate()+1);
+    curr.setDate(curr.getDate() + 1);
     var date = curr.toISOString().substring(0, 10);
 
     const [deadlineTask, setDeadline] = useState(date);
@@ -138,6 +140,17 @@ function SingleTask() {
             document.body.classList.remove('bodyTask');
         };
     });
+
+    const handleDownload = () => {
+        const doc = new jsPDF();
+        doc.text("Task Date: " + dateTask, 10, 10);
+        doc.text((deadlineTask < Date.now ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depăsit/Nesetat"), 10, 20);
+        doc.text("Task Title: " + nameTask, 10, 30);
+        doc.text("Task Description: " + descriptionTask, 10, 40);
+        doc.text("Task Status: " + (isCheckedTask === false ? ('Not Completed') : ('Completed')), 10, 50);
+        doc.text("Task Assigned: " + assignedTask, 10, 60);
+        doc.save("Task_"+nameTask+".pdf");
+    }
 
     const handleRemoveAssign = () => {
 
@@ -221,7 +234,7 @@ function SingleTask() {
     function handleInputDesc(event) {
         setTempDescriptionTask(event.target.value);
     }
-    
+
     const [tempDeadline, setTempDeadline] = useState(deadlineTask);
     function handleInputDDLChange(event) {
         if (event.target.value !== "") {
@@ -317,13 +330,14 @@ function SingleTask() {
 
                     <div className="singleTask__buttons">
 
+
                         {roleCookies === "admin" ? assignedTask ?
                             <Button variant="danger" type="submit" onClick={handleRemoveAssign}>{assignedTask}</Button> : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button> :
                             assignedTask ? "" : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button>
 
                         }
 
-
+                       
                         {(assignedTask === usernameCookies) || (roleCookies === "admin") ?
                             <>
                                 <Dropdown onSelect={onSelect}>
@@ -361,6 +375,9 @@ function SingleTask() {
                         }
 
                         <br />
+                        <Button variant="info" onClick={handleDownload}>Download</Button>
+                        <br />
+
                         <br />
 
 
