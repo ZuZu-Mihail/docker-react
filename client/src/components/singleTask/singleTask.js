@@ -141,14 +141,50 @@ function SingleTask() {
         };
     });
 
+    function addWrappedText({text, textWidth, doc, fontSize = 10, fontType = 'normal', lineSpacing = 7, xPosition = 10, initialYPosition = 10, pageWrapInitialYPosition = 10}) {
+        var textLines = doc.splitTextToSize(text, textWidth); // Split the text into lines
+        var pageHeight = doc.internal.pageSize.height;        // Get page height, well use this for auto-paging
+        doc.setFont(fontType);
+        doc.setFontSize(fontSize);
+      
+        var cursorY = initialYPosition;
+      
+        textLines.forEach(lineText => {
+          if (cursorY > pageHeight) { // Auto-paging
+            doc.addPage();
+            cursorY = pageWrapInitialYPosition;
+          }
+          doc.text(xPosition, cursorY, lineText);
+          cursorY += lineSpacing;
+        })
+      }
+
     const handleDownload = () => {
         const doc = new jsPDF();
-        doc.text("Task Date: " + dateTask, 10, 10);
-        doc.text((deadlineTask < Date.now ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depăsit/Nesetat"), 10, 20);
-        doc.text("Task Title: " + nameTask, 10, 30);
-        doc.text("Task Description: " + descriptionTask, 10, 40);
+        doc.setFontSize(20);
+        doc.text("Task Details", 90, 10);
+        doc.setFontSize(14);
+        doc.setFont("normal");
+        doc.text("Task Date: " + dateTask, 10, 20);
+        doc.text((deadlineTask < Date.now ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depasit/Nesetat"), 10, 30);
+        doc.text("Task Title: " + nameTask, 10, 40);
         doc.text("Task Status: " + (isCheckedTask === false ? ('Not Completed') : ('Completed')), 10, 50);
         doc.text("Task Assigned: " + assignedTask, 10, 60);
+        // doc.text(descriptionTask !== "" ? ("Task Description: " + descriptionTask) : ("Acest task (inca) nu are o descriere"), 10, 50);
+        addWrappedText({
+            text: descriptionTask !== "" ? ("Task Description: " + descriptionTask) : ("Acest task (inca) nu are o descriere"), 
+            textWidth: 170,
+            doc,
+          
+            // Optional
+            fontSize: '14',
+            fontType: 'normal',
+            lineSpacing: 7,               // Space between lines
+            xPosition: 10,                // Text offset from left of document
+            initialYPosition: 70,         // Initial offset from top of document; set based on prior objects in document
+            pageWrapInitialYPosition: 10  // Initial offset from top of document when page-wrapping
+          });  
+       
         doc.save("Task_"+nameTask+".pdf");
     }
 
