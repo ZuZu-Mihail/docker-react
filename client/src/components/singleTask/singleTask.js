@@ -21,12 +21,12 @@ import { AddToCalendarButton } from 'add-to-calendar-button-react';
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
-const mailCookies = cookies.get("UserMail");
-let usernameCookies;
+const usernameCookies = cookies.get("UserName");
+
 // const usernameCookies = cookies.get("UserName");
 // const roleCookies = cookies.get("UserRole");
 
-const roleCookiesOrigin = cookies.get("UserRole");
+const roleCookies = cookies.get("UserRole");
 
 function useInterval(callback, delay) {
     const savedCallback = useRef();
@@ -52,7 +52,8 @@ function useInterval(callback, delay) {
 
 function SingleTask() {
 
-    const [roleCookies, setRoleCookies] = useState(roleCookiesOrigin);
+    // const [roleCookies, setRoleCookies] = useState(roleCookiesOrigin);
+
 
     const { id } = useParams();
     function formatDate(date) {
@@ -66,8 +67,9 @@ function SingleTask() {
         const currentMonth = date.getMonth() + 1;
         const monthString = currentMonth >= 10 ? currentMonth : `0${currentMonth}`;
         const currentDate = date.getDate();
-        // const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
-        return `${date.getFullYear()}-${monthString}-${currentDate}`;
+        const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
+        console.log(`${date.getFullYear()}-${monthString}-${dateString}`);
+        return `${date.getFullYear()}-${monthString}-${dateString}`;
     }
     const [nameTask, setNameTask] = useState("");
     const [descriptionTask, setDescriptionTask] = useState("");
@@ -110,24 +112,24 @@ function SingleTask() {
                 /* The above code is making a GET request to the "http://localhost:4000/users/email/" endpoint with the
                 value of the "mailCookies" variable appended to the URL. It is setting the "Content-Type" header to
                 "application/json". */
-                fetch("http://localhost:4000/users/email/" + mailCookies, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        usernameCookies = data.name;
-                        setRoleCookies(data.role);
-                        cookies.set("UserRole", roleCookies, {
-                            path: "/",
-                        });
-                    })
-                    .catch((err) => {
-                        console.log(err.message);
-                    }
-                    )
+                // fetch("http://localhost:4000/users/email/" + mailCookies, {
+                //     method: "GET",
+                //     headers: {
+                //         "Content-Type": "application/json",
+                //     },
+                // })
+                //     .then((response) => response.json())
+                //     .then((data) => {
+                //         usernameCookies = data.name;
+                //         setRoleCookies(data.role);
+                //         cookies.set("UserRole", roleCookies, {
+                //             path: "/",
+                //         });
+                //     })
+                //     .catch((err) => {
+                //         console.log(err.message);
+                //     }
+                //     )
                 setNameTask(data.name);
                 setDescriptionTask(data.description);
                 setDateTask(formatDate(new Date(data.created)));
@@ -348,59 +350,60 @@ function SingleTask() {
                 </div>
                 <div className="container_copy">
 
+                    {fetchDone ? (
+                        <>
+                            <h3 className="singleTask__date">Task Date: {dateTask}</h3>
+                            <h3 className="singleTask__deadline">
+                                {/* {deadlineTask < Date.now ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depăsit/Nesetat"} */}
+                                {Date.now() - new Date(deadlineTask) < 0 ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depăsit/Nesetat"}
+                            </h3>
+                            <h1 className="singleTask__title">{nameTask}</h1>
+                            <p className="singleTask__description">{descriptionTask}</p>
+                            {/* <h3>Task Status:  {isCheckedTask === false ? ('Not Completed') : ('Completed')}</h3> */}
 
-                    <h3 className="singleTask__date">Task Date: {dateTask}</h3>
-                    <h3 className="singleTask__deadline">
-                        {/* {deadlineTask < Date.now ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depăsit/Nesetat"} */}
-                        {Date.now() - new Date(deadlineTask) < 0 ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depăsit/Nesetat"}
-                    </h3>
-                    <h1 className="singleTask__title">{nameTask}</h1>
-                    <p className="singleTask__description">{descriptionTask}</p>
-                    {/* <h3>Task Status:  {isCheckedTask === false ? ('Not Completed') : ('Completed')}</h3> */}
+                            <label className="singleTask__label" htmlFor="isCheckedTask">Status:</label>
 
-                    <label className="singleTask__label" htmlFor="isCheckedTask">Status:</label>
+                            {/* {(assignedTask === usernameCookies) || (roleCookies === "admin") ? */}
+                            {(roleCookies === "admin") ?
+                                (<>
+                                    <input
+                                        type="checkbox"
+                                        name="isCheckedTask"
+                                        checked={isCheckedTask}
+                                        onChange={() =>
+                                            handleCheckboxChange(id)
+                                        }
+                                    />
 
-                    {/* {(assignedTask === usernameCookies) || (roleCookies === "admin") ? */}
-                    {(roleCookies === "admin") ?
-                        (<>
-                            <input
-                                type="checkbox"
-                                name="isCheckedTask"
-                                checked={isCheckedTask}
-                                onChange={() =>
-                                    handleCheckboxChange(id)
+                                    <i> {isCheckedTask === false ? ('Not Completed') : ('Completed')}</i>
+
+                                </>
+                                ) : (<>
+                                    <input
+                                        type="checkbox"
+                                        name="isCheckedTask"
+                                        disabled
+                                        checked={isCheckedTask}
+                                    /> {isCheckedTask === false ? ('Not Completed') : ('Completed')}
+                                </>
+                                )
+                            }
+                            {assignedTask === null ? (
+                                <h3>Task Assigned: none</h3>
+                            ) : (
+
+                                <h3>Task Assigned: {assignedTask}</h3>
+                            )}
+
+                            <div className="singleTask__buttons">
+
+
+                                {roleCookies === "admin" ? assignedTask ?
+                                    <Button variant="danger" type="submit" onClick={handleRemoveAssign}>{assignedTask}</Button> : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button> :
+                                    assignedTask ? "" : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button>
+
                                 }
-                            />
-
-                            <i> {isCheckedTask === false ? ('Not Completed') : ('Completed')}</i>
-
-                        </>
-                        ) : (<>
-                            <input
-                                type="checkbox"
-                                name="isCheckedTask"
-                                disabled
-                                checked={isCheckedTask}
-                            /> {isCheckedTask === false ? ('Not Completed') : ('Completed')}
-                        </>
-                        )
-                    }
-                    {assignedTask === null ? (
-                        <h3>Task Assigned: none</h3>
-                    ) : (
-
-                        <h3>Task Assigned: {assignedTask}</h3>
-                    )}
-
-                    <div className="singleTask__buttons">
-
-
-                        {roleCookies === "admin" ? assignedTask ?
-                            <Button variant="danger" type="submit" onClick={handleRemoveAssign}>{assignedTask}</Button> : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button> :
-                            assignedTask ? "" : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button>
-
-                        }
-                        {/* {((assignedTask === usernameCookies)) ? (
+                                {/* {((assignedTask === usernameCookies)) ? (
 
                             console.log("are taskul asignat")
 
@@ -427,145 +430,149 @@ function SingleTask() {
                         )
                         } */}
 
-                        {(assignedTask === usernameCookies || roleCookies === "admin") ?
-                            <>
+                                {(assignedTask === usernameCookies || roleCookies === "admin") ?
+                                    <>
 
 
 
-                                <Dropdown onSelect={onSelect}>
-                                    <Dropdown.Toggle variant={status === "Not Started" ? "danger" : status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled={isCheckedTask}>
-                                        {status ? status : "Not started"}
-                                    </Dropdown.Toggle>
+                                        <Dropdown onSelect={onSelect}>
+                                            <Dropdown.Toggle variant={status === "Not Started" ? "danger" : status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled={isCheckedTask}>
+                                                {status ? status : "Not started"}
+                                            </Dropdown.Toggle>
 
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
+                                            <Dropdown.Menu>
+                                                <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
 
-                                        <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
-                                        <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
 
-                                    </Dropdown.Menu>
-                                </Dropdown>
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+
+                                        <br />
+
+                                        {/* {Date.now() - new Date(deadlineTask) < 0 ? (
+
+                                            <>
+                                                <AddToCalendarButton
+
+                                                    name={nameTask}
+                                                    startDate={formatCalendar(new Date(deadlineTask))}
+                                                    location="Online"
+                                                    description={descriptionTask}
+                                                    options={['Apple', 'Google', 'iCal', 'Outlook.com', 'Microsoft 365', 'Microsoft Teams', 'Yahoo']}
+
+                                                    timeZone="Europe/Bucharest"
+                                                ></AddToCalendarButton>
+                                            </>
+                                        ) : (
+                                            <>
+
+                                            </>
+                                        )} */}
+
+                                    </>
+                                    :
+                                    (
+                                        <>
+
+                                            <Dropdown onSelect={onSelect}>
+                                                <Dropdown.Toggle variant={status === "Not Started" ? "danger" : status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled>
+                                                    {status ? status : "Not started"}
+                                                </Dropdown.Toggle>
+
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
+
+                                                    <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                                    <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
+
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+
+                                        </>)
+                                }
+
+                                <br />
+                                <Button variant="info" onClick={handleDownload}>Download</Button>
+                                <br />
 
                                 <br />
 
-                                {/* {fetchDone ? (
-                                    <>
 
-                                        {Date.now() - new Date(deadlineTask) < 0 ? (
 
-                                            <AddToCalendarButton
+                                {roleCookies === "admin" ? (<>
+                                    <div className="adminZone">
+                                        <Button className="" variant="primary" onClick={handleEdit} >Edit</Button>
+                                        <Button className="" variant="danger" onClick={handleDelete} >Delete</Button>
+                                    </div>
+                                    <br />
 
-                                                name={nameTask}
-                                                startDate={formatCalendar(new Date(deadlineTask))}
-                                                location="Online"
-                                                description={descriptionTask}
-                                                options={['Apple', 'Google', 'iCal', 'Outlook.com', 'Microsoft 365', 'Microsoft Teams', 'Yahoo']}
+                                    {showEdit ? (
+                                        <>
+                                            <br />
+                                            <Form className="formAdmin">
+                                                <Form.Group controlId="form">
+                                                    <Form.Label>Schimba titlul</Form.Label>
+                                                    <Form.Control type="text" placeholder="Enter new Title" defaultValue={nameTask} onChange={handleInputTitle} />
+                                                </Form.Group>
 
-                                                timeZone="Europe/Bucharest"
-                                            ></AddToCalendarButton>
-                                        ) : (
-                                            <>
-                                            </>
-                                        )}
-                                    </>) : (
-                                    <>
-                                        <i>Calendar is loading...</i>
-                                    </>
-                                )} */}
-                            </>
-                            :
-                            <>
-                                <Dropdown onSelect={onSelect}>
-                                    <Dropdown.Toggle variant={status === "Not Started" ? "danger" : status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled>
-                                        {status ? status : "Not started"}
-                                    </Dropdown.Toggle>
+                                                <Form.Group controlId="form">
+                                                    <Form.Label>Schimba descrierea</Form.Label>
+                                                    <Form.Control as="textarea" rows={4} cols={40} type="text" placeholder="Enter new Description" defaultValue={descriptionTask} onChange={handleInputDesc} />
+                                                </Form.Group>
 
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
+                                                <Form.Group controlId="ddl">
+                                                    <Form.Label >Change the deadline</Form.Label>
+                                                    <Form.Control
+                                                        type="date"
+                                                        name="ddl"
+                                                        placeholder={defaultDedline(deadlineTask)}
+                                                        // value={defaultDedline(deadlineTask)}
+                                                        onChange={handleInputDDLChange}
 
-                                        <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
-                                        <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
-
-                                    </Dropdown.Menu>
-                                </Dropdown>
-
-                            </>
-                        }
-
-                        <br />
-                        <Button variant="info" onClick={handleDownload}>Download</Button>
-                        <br />
-
-                        <br />
+                                                    />
+                                                </Form.Group>
 
 
 
-                        {roleCookies === "admin" ? (<>
-                            <div className="adminZone">
-                                <Button className="" variant="primary" onClick={handleEdit} >Edit</Button>
-                                <Button className="" variant="danger" onClick={handleDelete} >Delete</Button>
+                                            </Form>
+                                            <Button className="" variant="info" onClick={() => {
+                                                fetch("http://localhost:4000/tasks/" + id, {
+                                                    method: "PUT",
+                                                    headers: {
+                                                        "Content-Type": "application/json",
+                                                    },
+                                                    body: JSON.stringify({
+                                                        name: nameTempTask,
+                                                        description: descriptionTempTask,
+                                                        deadline: tempDeadline
+
+                                                    }),
+                                                })
+                                                    .catch((err) => {
+                                                        console.log(err.message);
+                                                    });
+                                                SetshowEdit(!showEdit);
+                                            }} >Save</Button>
+                                            <br />
+                                        </>
+                                    ) : (
+                                        <></>
+                                    )}
+
+                                    <br />
+
+                                </>) : (
+                                    <></>
+                                )}
                             </div>
-                            <br />
-
-                            {showEdit ? (
-                                <>
-                                    <br />
-                                    <Form className="formAdmin">
-                                        <Form.Group controlId="form">
-                                            <Form.Label>Schimba titlul</Form.Label>
-                                            <Form.Control type="text" placeholder="Enter new Title" defaultValue={nameTask} onChange={handleInputTitle} />
-                                        </Form.Group>
-
-                                        <Form.Group controlId="form">
-                                            <Form.Label>Schimba descrierea</Form.Label>
-                                            <Form.Control as="textarea" rows={4} cols={40} type="text" placeholder="Enter new Description" defaultValue={descriptionTask} onChange={handleInputDesc} />
-                                        </Form.Group>
-
-                                        <Form.Group controlId="ddl">
-                                            <Form.Label >Change the deadline</Form.Label>
-                                            <Form.Control
-                                                type="date"
-                                                name="ddl"
-                                                placeholder={defaultDedline(deadlineTask)}
-                                                // value={defaultDedline(deadlineTask)}
-                                                onChange={handleInputDDLChange}
-
-                                            />
-                                        </Form.Group>
-
-
-
-                                    </Form>
-                                    <Button className="" variant="info" onClick={() => {
-                                        fetch("http://localhost:4000/tasks/" + id, {
-                                            method: "PUT",
-                                            headers: {
-                                                "Content-Type": "application/json",
-                                            },
-                                            body: JSON.stringify({
-                                                name: nameTempTask,
-                                                description: descriptionTempTask,
-                                                deadline: tempDeadline
-
-                                            }),
-                                        })
-                                            .catch((err) => {
-                                                console.log(err.message);
-                                            });
-                                        SetshowEdit(!showEdit);
-                                    }} >Save</Button>
-                                    <br />
-                                </>
-                            ) : (
-                                <></>
-                            )}
-
-                            <br />
-
-                        </>) : (
-                            <></>
-                        )}
-                    </div>
+                        </>
+                    ) : (
+                        <>
+                            <i>Task is loading...</i>
+                        </>
+                    )}
 
                 </div>
 
