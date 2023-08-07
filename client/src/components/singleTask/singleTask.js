@@ -60,8 +60,8 @@ function SingleTask() {
         const currentMonth = date.getMonth() + 1;
         const monthString = currentMonth >= 10 ? currentMonth : `0${currentMonth}`;
         const currentDate = date.getDate();
-        // const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
-        return `${currentDate}-${monthString}-${date.getFullYear()}`;
+        const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
+        return `${dateString}-${monthString}-${date.getFullYear()}`;
     }
     function formatCalendar(date) {
         const currentMonth = date.getMonth() + 1;
@@ -437,14 +437,35 @@ function SingleTask() {
 
 
                                         <Dropdown onSelect={onSelect}>
-                                            <Dropdown.Toggle variant={status === "Not Started" ? "danger" : status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled={isCheckedTask}>
+                                            <Dropdown.Toggle variant={status === "Not Started" ? "danger" : status.includes("In progress") ? "warning" : "success"} id="dropdown-basic" disabled={isCheckedTask}>
                                                 {status ? status : "Not started"}
                                             </Dropdown.Toggle>
 
                                             <Dropdown.Menu>
                                                 <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
 
-                                                <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                                {/* <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item> */}
+
+                                                <Dropdown onSelect={onSelect}>
+                                                    <Dropdown.Toggle variant="light">
+                                                        In Progress
+                                                    </Dropdown.Toggle>
+
+                                                    <Dropdown.Menu>
+                                                        <Dropdown.Item eventKey={"In progress 10%"} >10%</Dropdown.Item>
+                                                        <Dropdown.Item eventKey={"In progress 20%"} >20%</Dropdown.Item>
+                                                        <Dropdown.Item eventKey={"In progress 30%"} >30%</Dropdown.Item>
+                                                        <Dropdown.Item eventKey={"In progress 40%"} >40%</Dropdown.Item>
+                                                        <Dropdown.Item eventKey={"In progress 50%"} >50%</Dropdown.Item>
+                                                        <Dropdown.Item eventKey={"In progress 60%"} >60%</Dropdown.Item>
+                                                        <Dropdown.Item eventKey={"In progress 70%"} >70%</Dropdown.Item>
+                                                        <Dropdown.Item eventKey={"In progress 80%"} >80%</Dropdown.Item>
+                                                        <Dropdown.Item eventKey={"In progress 90%"} >90%</Dropdown.Item>
+
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
+
+
                                                 <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
 
                                             </Dropdown.Menu>
@@ -452,7 +473,7 @@ function SingleTask() {
 
                                         <br />
 
-                                        {/* {Date.now() - new Date(deadlineTask) < 0 ? (
+                                        {Date.now() - new Date(deadlineTask) < 0 ? (
 
                                             <>
                                                 <AddToCalendarButton
@@ -462,15 +483,18 @@ function SingleTask() {
                                                     location="Online"
                                                     description={descriptionTask}
                                                     options={['Apple', 'Google', 'iCal', 'Outlook.com', 'Microsoft 365', 'Microsoft Teams', 'Yahoo']}
-
+                                                    inline
+                                                    listStyle="modal"
                                                     timeZone="Europe/Bucharest"
+                                                    styleLight="--btn-background: #0d6efd; --btn-text: #fff; --btn-shadow: none; "
+                                                    buttonStyle="3d"
                                                 ></AddToCalendarButton>
                                             </>
                                         ) : (
                                             <>
 
                                             </>
-                                        )} */}
+                                        )}
 
                                     </>
                                     :
@@ -478,14 +502,32 @@ function SingleTask() {
                                         <>
 
                                             <Dropdown onSelect={onSelect}>
-                                                <Dropdown.Toggle variant={status === "Not Started" ? "danger" : status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled>
+                                                <Dropdown.Toggle variant={status === "Not Started" ? "danger" : status.includes("In progress") ? "warning" : "success"} id="dropdown-basic" disabled>
                                                     {status ? status : "Not started"}
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
                                                     <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
 
-                                                    <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                                    {/* <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item> */}
+                                                    <Dropdown onSelect={onSelect}>
+                                                        <Dropdown.Toggle variant="light">
+                                                            In Progress
+                                                        </Dropdown.Toggle>
+
+                                                        <Dropdown.Menu>
+                                                            <Dropdown.Item eventKey={"In progress 10%"} >10%</Dropdown.Item>
+                                                            <Dropdown.Item eventKey={"In progress 20%"} >20%</Dropdown.Item>
+                                                            <Dropdown.Item eventKey={"In progress 30%"} >30%</Dropdown.Item>
+                                                            <Dropdown.Item eventKey={"In progress 40%"} >40%</Dropdown.Item>
+                                                            <Dropdown.Item eventKey={"In progress 50%"} >50%</Dropdown.Item>
+                                                            <Dropdown.Item eventKey={"In progress 60%"} >60%</Dropdown.Item>
+                                                            <Dropdown.Item eventKey={"In progress 70%"} >70%</Dropdown.Item>
+                                                            <Dropdown.Item eventKey={"In progress 80%"} >80%</Dropdown.Item>
+                                                            <Dropdown.Item eventKey={"In progress 90%"} >90%</Dropdown.Item>
+
+                                                        </Dropdown.Menu>
+                                                    </Dropdown>
                                                     <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
 
                                                 </Dropdown.Menu>

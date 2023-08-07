@@ -20,11 +20,11 @@ const mailCookies = cookies.get("UserMail");
  * @returns The formatted date string in the format "DD-MM-YYYY".
  */
 function formatDate(date) {
-    const currentMonth = date.getMonth()+1;
+    const currentMonth = date.getMonth() + 1;
     const monthString = currentMonth >= 10 ? currentMonth : `0${currentMonth}`;
     const currentDate = date.getDate();
-    // const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
-    return `${currentDate}-${monthString}-${date.getFullYear()}`;
+    const dateString = currentDate >= 10 ? currentDate : `0${currentDate}`;
+    return `${dateString}-${monthString}-${date.getFullYear()}`;
 }
 
 let usernameCookies;
@@ -151,7 +151,7 @@ const Item = (props) => {
                     </td>
                     <td>
                         {props.item.deadline < Date.now ? formatDate(new Date(props.item.deadline)) : "N/A"}
-                        {}
+                        { }
                     </td>
                     {/* <td>
                     {formatDate(new Date(props.item.created))}
@@ -196,14 +196,32 @@ variant "danger" and an `onClick` event handler that calls the `handleRemoveAssi
                         {(props.item.assigned === usernameCookies) || (roleCookies === "admin") ?
                             <>
                                 <Dropdown onSelect={onSelect}>
-                                    <Dropdown.Toggle variant={props.item.status === "Not Started" ? "danger" : props.item.status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled={props.item.isChecked}>
+                                    <Dropdown.Toggle variant={props.item.status === "Not Started" ? "danger" : props.item.status.includes("In progress") ? "warning" : "success"} id="dropdown-basic" disabled={props.item.isChecked}>
                                         {props.item.status ? props.item.status : "Not started"}
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
                                         <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
 
-                                        <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                        {/* <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item> */}
+                                        <Dropdown onSelect={onSelect}>
+                                            <Dropdown.Toggle variant="light">
+                                                In Progress
+                                            </Dropdown.Toggle>
+
+                                            <Dropdown.Menu>
+                                                <Dropdown.Item eventKey={"In progress 10%"} >10%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 20%"} >20%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 30%"} >30%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 40%"} >40%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 50%"} >50%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 60%"} >60%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 70%"} >70%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 80%"} >80%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 90%"} >90%</Dropdown.Item>
+
+                                            </Dropdown.Menu>
+                                        </Dropdown>
                                         <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
 
                                     </Dropdown.Menu>
@@ -213,14 +231,32 @@ variant "danger" and an `onClick` event handler that calls the `handleRemoveAssi
                             :
                             <>
                                 <Dropdown onSelect={onSelect}>
-                                    <Dropdown.Toggle variant={props.item.status === "Not Started" ? "danger" : props.item.status === "In progress" ? "warning" : "success"} id="dropdown-basic" disabled>
+                                    <Dropdown.Toggle variant={props.item.status === "Not Started" ? "danger" : props.item.status.includes("In progress")  ? "warning" : "success"} id="dropdown-basic" disabled>
                                         {props.item.status ? props.item.status : "Not started"}
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
                                         <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
 
-                                        <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item>
+                                        {/* <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item> */}
+                                        <Dropdown onSelect={onSelect}>
+                                            <Dropdown.Toggle variant="light">
+                                                In Progress
+                                            </Dropdown.Toggle>
+
+                                            <Dropdown.Menu>
+                                                <Dropdown.Item eventKey={"In progress 10%"} >10%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 20%"} >20%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 30%"} >30%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 40%"} >40%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 50%"} >50%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 60%"} >60%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 70%"} >70%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 80%"} >80%</Dropdown.Item>
+                                                <Dropdown.Item eventKey={"In progress 90%"} >90%</Dropdown.Item>
+
+                                            </Dropdown.Menu>
+                                        </Dropdown>
                                         <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
 
                                     </Dropdown.Menu>
@@ -264,9 +300,9 @@ variant "danger" and an `onClick` event handler that calls the `handleRemoveAssi
                             </span>
                         </td>
                         <td>
-                        {props.item.deadline < Date.now ? formatDate(new Date(props.item.deadline)) : "N/A"}
-                        {}
-                    </td>
+                            {props.item.deadline < Date.now ? formatDate(new Date(props.item.deadline)) : "N/A"}
+                            { }
+                        </td>
                         {/* <td>
                         {formatDate(new Date(props.item.created))}
                     </td> */}
