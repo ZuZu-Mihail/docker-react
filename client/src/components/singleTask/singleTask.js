@@ -537,7 +537,7 @@ function SingleTask() {
                                 }
 
                                 <br />
-                                <Button variant="info" onClick={handleDownload}>Download</Button>
+                                <Button variant="primary" onClick={handleDownload}>Download</Button>
                                 <br />
 
                                 <br />
