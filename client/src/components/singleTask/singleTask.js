@@ -199,6 +199,7 @@ function SingleTask() {
         doc.text("Task Title: " + nameTask, 10, 40);
         doc.text("Task Status: " + (isCheckedTask === false ? ('Not Completed') : ('Completed')), 10, 50);
         doc.text("Task Assigned: " + assignedTask, 10, 60);
+        doc.text("Task User status: " + status, 10, 70);
         // doc.text(descriptionTask !== "" ? ("Task Description: " + descriptionTask) : ("Acest task (inca) nu are o descriere"), 10, 50);
         addWrappedText({
             text: descriptionTask !== "" ? ("Task Description: " + descriptionTask) : ("Acest task (inca) nu are o descriere"),
@@ -210,7 +211,7 @@ function SingleTask() {
             fontType: 'normal',
             lineSpacing: 7,               // Space between lines
             xPosition: 10,                // Text offset from left of document
-            initialYPosition: 70,         // Initial offset from top of document; set based on prior objects in document
+            initialYPosition: 80,         // Initial offset from top of document; set based on prior objects in document
             pageWrapInitialYPosition: 10  // Initial offset from top of document when page-wrapping
         });
 
