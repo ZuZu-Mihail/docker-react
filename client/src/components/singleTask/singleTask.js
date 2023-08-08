@@ -3,13 +3,15 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 
 import Dropdown from 'react-bootstrap/Dropdown';
 
 // import { BsArrowLeft } from "bootstrap-icons";
+
+import emailjs from "@emailjs/browser";
 
 import "./singleTask.css";
 
@@ -27,6 +29,8 @@ const usernameCookies = cookies.get("UserName");
 // const roleCookies = cookies.get("UserRole");
 
 const roleCookies = cookies.get("UserRole");
+
+const mailCookies = cookies.get("UserMail");
 
 function useInterval(callback, delay) {
     const savedCallback = useRef();
@@ -159,8 +163,10 @@ function SingleTask() {
 
 
     }, 1000);
-    useEffect(() => {
 
+
+
+    useEffect(() => {
 
 
         document.body.classList.add('bodyTask');
@@ -197,7 +203,7 @@ function SingleTask() {
         doc.text("Task Date: " + dateTask, 10, 20);
         doc.text((Date.now() - new Date(deadlineTask) < 0 ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depasit/Nesetat"), 10, 30);
         doc.text("Task Title: " + nameTask, 10, 40);
-        doc.text("Task Status: " + (isCheckedTask === false ? ('Not Completed') : ('Completed')), 10, 50);
+        doc.text("Admin feedback: " + (isCheckedTask === false ? ('Not Completed') : ('Completed')), 10, 50);
         doc.text("Task Assigned: " + assignedTask, 10, 60);
         doc.text("Task User status: " + status, 10, 70);
         // doc.text(descriptionTask !== "" ? ("Task Description: " + descriptionTask) : ("Acest task (inca) nu are o descriere"), 10, 50);
@@ -216,6 +222,44 @@ function SingleTask() {
         });
 
         doc.save("Task_" + nameTask + ".pdf");
+    }
+
+    useEffect(() => emailjs.init("5uVkon-v2jeVV0ySf"), []);
+
+
+    const handleSendMail = () => {
+
+
+
+        const serviceID = "service_0jgs0dl";
+        const templateID = "template_cyqkz7g";
+
+        const templateParams = {
+            from_name: nameTask,
+            to_name: usernameCookies,
+
+            recipient: mailCookies,
+
+            // eslint-disable-next-line no-useless-concat
+            message: "Task Details: \n" + "Task Date: " + dateTask + "\n" + (Date.now() - new Date(deadlineTask) < 0 ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depasit/Nesetat") + "\n" + "Task Title: " + nameTask + "\n" + "Admin Feedback: " + (isCheckedTask === false ? ('Not Completed') : ('Completed')) + "\n" + "Task Assigned: " + assignedTask + "\n" + "Task User status: " + status + "\n" + (descriptionTask !== "" ? ("Task Description: " + descriptionTask) : ("Acest task (inca) nu are o descriere")),
+
+
+        }
+
+        emailjs.send(serviceID, templateID, templateParams)
+            .then((response) => {
+                console.log("SUCCESS!", response.status, response.text);
+                alert("Mail sent successfully!");
+            }
+            )
+            .catch((err) => {
+                console.log(err.message);
+                alert("Mail not sent!");
+            }
+            )
+
+
+
     }
 
     const handleRemoveAssign = () => {
@@ -404,6 +448,8 @@ function SingleTask() {
                                     assignedTask ? "" : <Button variant="primary" type="submit" onClick={handleTake}>Take Task</Button>
 
                                 }
+                                <br />
+                                <br />
                                 {/* {((assignedTask === usernameCookies)) ? (
 
                             console.log("are taskul asignat")
@@ -431,70 +477,89 @@ function SingleTask() {
                         )
                         } */}
 
+
+
                                 {(assignedTask === usernameCookies || roleCookies === "admin") ?
                                     <>
 
+                                        <Container
+                                            style={{
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                textAlign: "center",
+                                            }
+                                            }
+                                        >
+                                            <Row>
+                                                <Col>
+                                                    <Dropdown onSelect={onSelect}>
+                                                        <Dropdown.Toggle variant={status === "Not Started" ? "danger" : status.includes("In progress") ? "warning" : "success"} id="dropdown-basic" disabled={isCheckedTask}>
+                                                            {status ? status : "Not started"}
+                                                        </Dropdown.Toggle>
+
+                                                        <Dropdown.Menu>
+                                                            <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
+
+                                                            {/* <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item> */}
+
+                                                            <Dropdown onSelect={onSelect}>
+                                                                <Dropdown.Toggle variant="light">
+                                                                    In Progress
+                                                                </Dropdown.Toggle>
+
+                                                                <Dropdown.Menu>
+                                                                    <Dropdown.Item eventKey={"In progress 10%"} >10%</Dropdown.Item>
+                                                                    <Dropdown.Item eventKey={"In progress 20%"} >20%</Dropdown.Item>
+                                                                    <Dropdown.Item eventKey={"In progress 30%"} >30%</Dropdown.Item>
+                                                                    <Dropdown.Item eventKey={"In progress 40%"} >40%</Dropdown.Item>
+                                                                    <Dropdown.Item eventKey={"In progress 50%"} >50%</Dropdown.Item>
+                                                                    <Dropdown.Item eventKey={"In progress 60%"} >60%</Dropdown.Item>
+                                                                    <Dropdown.Item eventKey={"In progress 70%"} >70%</Dropdown.Item>
+                                                                    <Dropdown.Item eventKey={"In progress 80%"} >80%</Dropdown.Item>
+                                                                    <Dropdown.Item eventKey={"In progress 90%"} >90%</Dropdown.Item>
+
+                                                                </Dropdown.Menu>
+                                                            </Dropdown>
 
 
-                                        <Dropdown onSelect={onSelect}>
-                                            <Dropdown.Toggle variant={status === "Not Started" ? "danger" : status.includes("In progress") ? "warning" : "success"} id="dropdown-basic" disabled={isCheckedTask}>
-                                                {status ? status : "Not started"}
-                                            </Dropdown.Toggle>
+                                                            <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
 
-                                            <Dropdown.Menu>
-                                                <Dropdown.Item eventKey={"Not Started"} >Not Started</Dropdown.Item>
+                                                        </Dropdown.Menu>
+                                                    </Dropdown>
 
-                                                {/* <Dropdown.Item eventKey={"In progress"} >In progress</Dropdown.Item> */}
+                                                </Col>
+                                                <Col>
 
-                                                <Dropdown onSelect={onSelect}>
-                                                    <Dropdown.Toggle variant="light">
-                                                        In Progress
-                                                    </Dropdown.Toggle>
+                                                    {Date.now() - new Date(deadlineTask) < 0 ? (
 
-                                                    <Dropdown.Menu>
-                                                        <Dropdown.Item eventKey={"In progress 10%"} >10%</Dropdown.Item>
-                                                        <Dropdown.Item eventKey={"In progress 20%"} >20%</Dropdown.Item>
-                                                        <Dropdown.Item eventKey={"In progress 30%"} >30%</Dropdown.Item>
-                                                        <Dropdown.Item eventKey={"In progress 40%"} >40%</Dropdown.Item>
-                                                        <Dropdown.Item eventKey={"In progress 50%"} >50%</Dropdown.Item>
-                                                        <Dropdown.Item eventKey={"In progress 60%"} >60%</Dropdown.Item>
-                                                        <Dropdown.Item eventKey={"In progress 70%"} >70%</Dropdown.Item>
-                                                        <Dropdown.Item eventKey={"In progress 80%"} >80%</Dropdown.Item>
-                                                        <Dropdown.Item eventKey={"In progress 90%"} >90%</Dropdown.Item>
+                                                        <>
+                                                            <AddToCalendarButton
 
-                                                    </Dropdown.Menu>
-                                                </Dropdown>
+                                                                name={nameTask}
+                                                                startDate={formatCalendar(new Date(deadlineTask))}
+                                                                location="Online"
+                                                                description={descriptionTask}
+                                                                options={['Apple', 'Google', 'iCal', 'Outlook.com', 'Microsoft 365', 'Microsoft Teams', 'Yahoo']}
+                                                                inline
+                                                                listStyle="modal"
+                                                                timeZone="Europe/Bucharest"
+                                                                styleLight="--btn-background: #0d6efd; --btn-text: #fff; --btn-shadow: none; "
+                                                                buttonStyle="3d"
+                                                            ></AddToCalendarButton>
+                                                        </>
+                                                    ) : (
+                                                        <>
 
+                                                        </>
+                                                    )}
 
-                                                <Dropdown.Item eventKey={"Completed"} >Completed</Dropdown.Item>
+                                                </Col>
+                                                <Col>
 
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-
-                                        <br />
-
-                                        {Date.now() - new Date(deadlineTask) < 0 ? (
-
-                                            <>
-                                                <AddToCalendarButton
-
-                                                    name={nameTask}
-                                                    startDate={formatCalendar(new Date(deadlineTask))}
-                                                    location="Online"
-                                                    description={descriptionTask}
-                                                    options={['Apple', 'Google', 'iCal', 'Outlook.com', 'Microsoft 365', 'Microsoft Teams', 'Yahoo']}
-                                                    inline
-                                                    listStyle="modal"
-                                                    timeZone="Europe/Bucharest"
-                                                    styleLight="--btn-background: #0d6efd; --btn-text: #fff; --btn-shadow: none; "
-                                                    buttonStyle="3d"
-                                                ></AddToCalendarButton>
-                                            </>
-                                        ) : (
-                                            <>
-
-                                            </>
-                                        )}
+                                                    <Button variant="primary" onClick={handleSendMail}>Send Mail</Button>
+                                                </Col>
+                                            </Row>
+                                        </Container>
 
                                     </>
                                     :
@@ -537,10 +602,26 @@ function SingleTask() {
                                 }
 
                                 <br />
-                                <Button variant="primary" onClick={handleDownload}>Download</Button>
-                                <br />
+                                <Container
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        textAlign: "center",
+                                    }
+                                    }
+                                >
+                                    <Row >
+                                        <Col >
+
+                                            <Button variant="primary" onClick={handleDownload}>Download</Button>
+                                        </Col>
+                                    </Row>
+                                </Container>
 
                                 <br />
+                                <br />
+
 
 
 
