@@ -176,38 +176,37 @@ function SingleTask() {
         };
     });
 
-    function addWrappedText({ text, textWidth, doc, fontSize = 10, fontType = 'normal', lineSpacing = 7, xPosition = 10, initialYPosition = 10, pageWrapInitialYPosition = 10 }) {
+    function addWrappedText({ text, textWidth, doc, fontSize = 10, fontType = 'normal', lineSpacing = 7, xPosition = 10, initialYPosition = 10, pageWrapInitialYPosition = 10 }) { // functia de adaugare a textului in format pdf
         var textLines = doc.splitTextToSize(text, textWidth); // Split the text into lines
         var pageHeight = doc.internal.pageSize.height;        // Get page height, well use this for auto-paging
-        doc.setFont(fontType);
-        doc.setFontSize(fontSize);
+        doc.setFont(fontType); // seteaza fontul
+        doc.setFontSize(fontSize); // seteaza dimensiunea fontului
 
-        var cursorY = initialYPosition;
+        var cursorY = initialYPosition; // Set the initial Y axis position. This is the distance from top, not from bottom.
 
-        textLines.forEach(lineText => {
+        textLines.forEach(lineText => { // Iterate through the lines and add them to the doc
             if (cursorY > pageHeight) { // Auto-paging
-                doc.addPage();
-                cursorY = pageWrapInitialYPosition;
+                doc.addPage(); // Add a new page
+                cursorY = pageWrapInitialYPosition; // Set the new Y axis position
             }
-            doc.text(xPosition, cursorY, lineText);
-            cursorY += lineSpacing;
+            doc.text(xPosition, cursorY, lineText); // Add the text
+            cursorY += lineSpacing; // Move the Y axis down
         })
     }
-
-    const handleDownload = () => {
-        const doc = new jsPDF();
-        doc.setFontSize(20);
-        doc.text("Task Details", 90, 10);
-        doc.setFontSize(14);
-        doc.setFont("normal");
-        doc.text("Task Date: " + dateTask, 10, 20);
-        doc.text((Date.now() - new Date(deadlineTask) < 0 ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depasit/Nesetat"), 10, 30);
-        doc.text("Task Title: " + nameTask, 10, 40);
-        doc.text("Admin feedback: " + (isCheckedTask === false ? ('Not Completed') : ('Completed')), 10, 50);
-        doc.text("Task Assigned: " + assignedTask, 10, 60);
-        doc.text("Task User status: " + status, 10, 70);
-        // doc.text(descriptionTask !== "" ? ("Task Description: " + descriptionTask) : ("Acest task (inca) nu are o descriere"), 10, 50);
-        addWrappedText({
+    
+    const handleDownload = () => { // functia de download a taskului in format pdf
+        const doc = new jsPDF(); // se creeaza un nou document
+        doc.setFontSize(20); // se seteaza dimensiunea fontului
+        doc.text("Task Details", 90, 10); // se adauga titlul
+        doc.setFontSize(14); // se seteaza dimensiunea fontului
+        doc.setFont("normal"); // se seteaza tipul fontului
+        doc.text("Task Date: " + dateTask, 10, 20); // se adauga data taskului
+        doc.text((Date.now() - new Date(deadlineTask) < 0 ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depasit/Nesetat"), 10, 30); // se adauga deadline-ul taskului
+        doc.text("Task Title: " + nameTask, 10, 40); // se adauga titlul taskului
+        doc.text("Admin feedback: " + (isCheckedTask === false ? ('Not Completed') : ('Completed')), 10, 50); // se adauga feedback-ul adminului
+        doc.text("Task Assigned: " + assignedTask, 10, 60); // se adauga persoana care a primit taskul
+        doc.text("Task User status: " + status, 10, 70); // se adauga statusul taskului
+        addWrappedText({ // se adauga descrierea taskului
             text: descriptionTask !== "" ? ("Task Description: " + descriptionTask) : ("Acest task (inca) nu are o descriere"),
             textWidth: 170,
             doc,
@@ -227,27 +226,20 @@ function SingleTask() {
     useEffect(() => emailjs.init("5uVkon-v2jeVV0ySf"), []);
 
 
-    const handleSendMail = () => {
+    const handleSendMail = () => { // functia de trimitere a mailului cu taskul
 
+        const serviceID = "service_0jgs0dl"; // id-ul serviciului de email
+        const templateID = "template_cyqkz7g"; // id-ul template-ului de email
 
-
-        const serviceID = "service_0jgs0dl";
-        const templateID = "template_cyqkz7g";
-
-        const templateParams = {
+        const templateParams = { // parametrii template-ului de email
             from_name: nameTask,
             to_name: usernameCookies,
-
             recipient: mailCookies,
-
-            // eslint-disable-next-line no-useless-concat
-            message: "Task Details: \n" + "Task Date: " + dateTask + "\n" + (Date.now() - new Date(deadlineTask) < 0 ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depasit/Nesetat") + "\n" + "Task Title: " + nameTask + "\n" + "Admin Feedback: " + (isCheckedTask === false ? ('Not Completed') : ('Completed')) + "\n" + "Task Assigned: " + assignedTask + "\n" + "Task User status: " + status + "\n" + (descriptionTask !== "" ? ("Task Description: " + descriptionTask) : ("Acest task (inca) nu are o descriere")),
-
-
+            message: "Task Details: \n" + "Task Date: " + dateTask + "\n" + (Date.now() - new Date(deadlineTask) < 0 ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depasit/Nesetat") + "\n" + "Task Title: " + nameTask + "\n" + "Admin Feedback: " + (isCheckedTask === false ? ('Not Completed') : ('Completed')) + "\n" + "Task Assigned: " + assignedTask + "\n" + "Task User status: " + status + "\n" + (descriptionTask !== "" ? ("Task Description: " + descriptionTask) : ("Acest task (inca) nu are o descriere")), // mesajul mailului
         }
 
-        emailjs.send(serviceID, templateID, templateParams)
-            .then((response) => {
+        emailjs.send(serviceID, templateID, templateParams) // se trimite mailul
+            .then((response) => { // se afiseaza un mesaj de succes sau de eroare
                 console.log("SUCCESS!", response.status, response.text);
                 alert("Mail sent successfully!");
             }
@@ -262,9 +254,9 @@ function SingleTask() {
 
     }
 
-    const handleRemoveAssign = () => {
+    const handleRemoveAssign = () => { // functia de stergere a persoanei care a primit taskul
 
-        fetch("http://localhost:4000/tasks/" + id, {
+        fetch("http://localhost:4000/tasks/" + id, { // se face un request de tip PUT catre server pentru a sterge persoana care a primit taskul
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -278,9 +270,9 @@ function SingleTask() {
             });
     }
 
-    const handleTake = () => {
+    const handleTake = () => { // functia de preluare a taskului
 
-        fetch("http://localhost:4000/tasks/" + id, {
+        fetch("http://localhost:4000/tasks/" + id, { // se face un request de tip PUT catre server pentru a prelua taskul
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -289,43 +281,39 @@ function SingleTask() {
                 assigned: usernameCookies
             }),
         })
-            .catch((err) => {
+            .catch((err) => { // se afiseaza un mesaj de succes sau de eroare
                 console.log(err.message);
             });
     }
 
-    const handleCheckboxChange = (string) => {
+    const handleCheckboxChange = (string) => { // functia de schimbare a statusului taskului
         const _id = string;
-
-        /* The `map` function is used to create a new array based on the `items` array. It iterates over
-        each item in the `items` array and returns a new array with the same number of items. */
 
         const status = !isCheckedTask;
 
-
-        fetch("http://localhost:4000/tasks/" + _id, {
+        fetch("http://localhost:4000/tasks/" + _id, { // se face un request de tip PUT catre server pentru a schimba statusul taskului
             method: "PUT",
-            headers: {
+            headers: { // se seteaza tipul de continut al requestului
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
+            body: JSON.stringify({ // se trimite noul status
                 isChecked: status
             }),
         })
-            .catch((err) => {
+            .catch((err) => { // se afiseaza un mesaj de succes sau de eroare
                 console.log(err.message);
             });
     };
 
-    const handleDelete = () => {
+    const handleDelete = () => { // functia de stergere a taskului
 
-        fetch("http://localhost:4000/tasks/" + id, {
+        fetch("http://localhost:4000/tasks/" + id, { // se face un request de tip DELETE catre server pentru a sterge taskul
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
             },
         })
-            .catch((err) => {
+            .catch((err) => { // se afiseaza un mesaj de succes sau de eroare
                 console.log(err.message);
             });
         window.location.href = "/";

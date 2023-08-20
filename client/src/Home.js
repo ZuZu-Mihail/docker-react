@@ -41,27 +41,7 @@ const Home = () => {
         if (mailCookies) {
 
             setMessage(userCookies + ", You are logged in with your email address " + mailCookies + " and you have the role of " + roleCookies + ".");
-            // fetch("http://localhost:4000/users/email/" + mailCookies, {
-            //     method: "GET",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            // })
-            //     .then((response) => response.json())
-            //     .then((data) => {
-            //         cookies.set("UserName", data.name, {
-            //             path: "/",
-            //         });
-            //         cookies.set("UserRole", data.role, {
-            //             path: "/",
-            //         });
-            //         // console.log(data.name);
-            //         setMessage(data.name + ", You are logged in with your email address " + mailCookies + " and you have the role of "+ data.role +".");
-            //     })
-            //     .catch((err) => {
-            //         console.log(err.message);
-            //     }
-            //     )
+           
         } else {
             // <Navigate to="/auth/" />
             setMessage("as a guest u should not seing this, it will redirect you to the auth page");

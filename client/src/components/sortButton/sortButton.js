@@ -18,27 +18,27 @@ const ASCENDING_SORTING_ORDER = "ascending";
  * DESCENDING_SORTING_ORDER, it renders a FontAwesomeIcon with the faArrowDownAZ icon and a color of
  * "#1a2b4
  */
-const SortButton = (props) => {
+const SortButton = (props) => { // functia SortButton primeste ca parametru props si returneaza un buton cu un eveniment onClick care apeleaza functia sortItems
     const [sortingOrder, setSortingOrder] = useState(DESCENDING_SORTING_ORDER);
 
     /**
      * The function `sortItems` sorts an array of items in either ascending or descending order based
      * on their names.
      */
-    const sortItems = () => {
+    const sortItems = () => { // functia sortItems sorteaza un array de items in ordine crescatoare sau descrescatoare in functie de numele lor
         const updatedItems = [...props.items];
-        if (sortingOrder === DESCENDING_SORTING_ORDER) {
+        if (sortingOrder === DESCENDING_SORTING_ORDER) { // daca ordinea de sortare este descrescatoare
             updatedItems.sort((a, b) => a.name.localeCompare(b.name));
             setSortingOrder(ASCENDING_SORTING_ORDER);
-        } else {
+        } else { // daca ordinea de sortare este crescatoare
             updatedItems.sort((a, b) => b.name.localeCompare(a.name));
             setSortingOrder(DESCENDING_SORTING_ORDER);
         }
-        props.setItems(updatedItems);
+        props.setItems(updatedItems); // seteaza items cu updatedItems
     };
 
-    return (
-        <button className="sortIcon" onClick={sortItems}>
+    return ( // returneaza un buton cu un eveniment onClick care apeleaza functia sortItems
+        <button className="sortIcon" onClick={sortItems}> // butonul are clasa "sortIcon" si un eveniment onClick care apeleaza functia sortItems
             {sortingOrder === DESCENDING_SORTING_ORDER ? (
                 <FontAwesomeIcon
                     icon={faArrowDownAZ}
