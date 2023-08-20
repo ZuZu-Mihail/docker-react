@@ -36,6 +36,7 @@ const userController = {
     res.status(200).json(user);
   },
 
+/* The `add` function in the `userController` is responsible for adding a new user to the system. */
   add: async function (req, res) {
     // console.log("parola din consola: " + req.body.password);
     bcrypt.hash(req.body.password, 10)
@@ -59,6 +60,9 @@ const userController = {
 
   },
 
+/* The `loginUser` function in the `userController` is responsible for handling the login
+functionality. It takes the email and password from the request body and passes them to the
+`userLogin` function in the `userModel` module. */
   loginUser: async function (req, res) {
     let authUser = userModel.userLogin(req.body.email, req.body.password)
     

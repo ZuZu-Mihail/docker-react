@@ -58,6 +58,8 @@ const userModel = {
     return await users.findByIdAndUpdate(id, user, { new: true });
   },
 
+/* The `userLogin` function is responsible for authenticating a user by checking their email and
+password. */
   userLogin: async function (email, password) { 
  
     let user = await users.findOne({ "email": email });

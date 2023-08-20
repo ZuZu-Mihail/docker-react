@@ -38,6 +38,13 @@ function Auth() {
     const [name, setName] = useState("");
 
 
+/**
+ * The `handleSubmitLogin` function is used to handle the submission of a login form, sending a POST
+ * request to a server endpoint and handling the response.
+ * @param e - The parameter `e` is an event object that is passed to the `handleSubmitLogin` function
+ * when it is called. It represents the event that triggered the function, in this case, the form
+ * submission event.
+ */
     const handleSubmitLogin = (e) => {
         // prevent the form from refreshing the whole page
         e.preventDefault();
@@ -83,6 +90,14 @@ function Auth() {
     }
 
 
+/**
+ * The `handleSubmitRegister` function is used to handle the registration form submission, checking if
+ * the email already exists in the database and either displaying an alert or creating a new user if it
+ * doesn't exist.
+ * @param e - The parameter `e` is an event object that is passed to the `handleSubmitRegister`
+ * function when it is called. It is typically an event object that represents the event that triggered
+ * the function, such as a form submission event.
+ */
     const handleSubmitRegister = (e) => {
         // prevent the form from refreshing the whole page
         e.preventDefault();
