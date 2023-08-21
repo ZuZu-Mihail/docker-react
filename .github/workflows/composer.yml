@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: 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
+          github_token: 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
           publish_dir: _site
       - uses: actions/checkout@v3
       - name: Build Task-Scheduler-App comp
