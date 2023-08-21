@@ -13,10 +13,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: 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
-          publish_dir: ./public
-      - uses: actions/checkout@v3
-      - name: Build Task-Scheduler-App comp
-        run: docker-compose up --build
+    - uses: actions/checkout@v3
+    - name: Build Task-Scheduler-App comp
+      run: docker-compose up --build
+    - name: Deploy to GH Pages 🚀
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: build
