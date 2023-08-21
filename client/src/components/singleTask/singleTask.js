@@ -193,7 +193,7 @@ function SingleTask() {
             cursorY += lineSpacing; // Move the Y axis down
         })
     }
-    
+
     const handleDownload = () => { // functia de download a taskului in format pdf
         const doc = new jsPDF(); // se creeaza un nou document
         doc.setFontSize(20); // se seteaza dimensiunea fontului
@@ -235,6 +235,7 @@ function SingleTask() {
             from_name: nameTask,
             to_name: usernameCookies,
             recipient: mailCookies,
+            // eslint-disable-next-line 
             message: "Task Details: \n" + "Task Date: " + dateTask + "\n" + (Date.now() - new Date(deadlineTask) < 0 ? ("Task deadline: " + formatDate(new Date(deadlineTask))) : "Deadline depasit/Nesetat") + "\n" + "Task Title: " + nameTask + "\n" + "Admin Feedback: " + (isCheckedTask === false ? ('Not Completed') : ('Completed')) + "\n" + "Task Assigned: " + assignedTask + "\n" + "Task User status: " + status + "\n" + (descriptionTask !== "" ? ("Task Description: " + descriptionTask) : ("Acest task (inca) nu are o descriere")), // mesajul mailului
         }
 
@@ -375,12 +376,12 @@ function SingleTask() {
     return (
         <>
             <div className="SingleTask">
-                <div className="img_pod">
+                <Link to="/" ><div className="img_pod">
 
-                    <Link to="/" ><svg xmlns="http://www.w3.org/2000/svg" width="50" height="35" fill="white" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="35" fill="white" class="bi bi-arrow-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-                    </svg></Link>
-                </div>
+                    </svg>
+                </div></Link>
                 <div className="container_copy">
 
                     {fetchDone ? (

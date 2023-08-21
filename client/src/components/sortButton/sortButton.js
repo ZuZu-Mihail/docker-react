@@ -38,7 +38,8 @@ const SortButton = (props) => { // functia SortButton primeste ca parametru prop
     };
 
     return ( // returneaza un buton cu un eveniment onClick care apeleaza functia sortItems
-        <button className="sortIcon" onClick={sortItems}> // butonul are clasa "sortIcon" si un eveniment onClick care apeleaza functia sortItems
+        <button className="sortIcon" onClick={sortItems}> 
+        {/* // butonul are clasa "sortIcon" si un eveniment onClick care apeleaza functia sortItems */}
             {sortingOrder === DESCENDING_SORTING_ORDER ? (
                 <FontAwesomeIcon
                     icon={faArrowDownAZ}
