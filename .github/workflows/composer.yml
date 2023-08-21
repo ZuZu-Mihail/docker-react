@@ -16,7 +16,7 @@ jobs:
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: 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
-          publish_dir: _site
+          publish_dir: ./public
       - uses: actions/checkout@v3
       - name: Build Task-Scheduler-App comp
         run: docker-compose up --build
