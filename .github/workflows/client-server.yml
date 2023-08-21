@@ -33,11 +33,10 @@ jobs:
 
     - name: Build app
       run: |
-        cd server && node app.js
-        cd ..
         cd client && npm run build
         cd ..
-        
+        cd server && node app.js
+        cd ..
 
     - name: Deploy to GH Pages 🚀
       if: ${{ github.event_name != 'pull_request' }}
