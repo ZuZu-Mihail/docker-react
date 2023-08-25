@@ -229,7 +229,7 @@ function SingleTask() {
     const handleSendMail = () => { // functia de trimitere a mailului cu taskul
 
         const serviceID = "service_0jgs0dl"; // id-ul serviciului de email
-        const templateID = "template_cyqkz7g"; // id-ul template-ului de email
+        const templateID = "template_ope6g5k"; // id-ul template-ului de email
 
         const templateParams = { // parametrii template-ului de email
             from_name: nameTask,
